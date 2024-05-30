@@ -1,0 +1,297 @@
+---
+title: |
+ | \vspace{5cm} Tarea N°1
+subtitle: |
+ Inferencia Causal - SOL3063
+date: "`r Sys.setlocale('LC_TIME', 'es_ES.UTF-8'); format(Sys.Date(), '%A %d, %B %Y')`"
+author: |
+ |  Estudiante [Andreas Laffert](mailto:alaffertt@estudiante.uc.cl)
+ |  Profesor Luis Maldonado
+ | Ayudante Gustavo Ahumada
+ | \vspace{8cm}
+output:
+  bookdown::pdf_document2:
+    template: null
+    toc: false
+    keep_tex: false
+    number_sections: false
+bibliography: ../input/bib/magister.bib     
+csl: ../input/bib/apa6.csl    
+linkcolor: gray
+urlcolor: blue
+linestretch: '1.15'
+link-citations: yes
+fontsize: 12pt
+papersize: a4
+geometry: "left=2.54cm,right=2.54cm,top=2.54cm,bottom=2.54cm" 
+lang: en-US
+header-includes:
+  - \usepackage{titling}
+  - \pretitle{\begin{center}\LARGE\includegraphics[width=7cm]{../img/logo_isuc.png}\\[\bigskipamount]}
+  - \posttitle{\end{center}}
+  - \usepackage{times}           # Times New Roman
+  - \usepackage{caption}
+  - \usepackage{floatrow} 
+  - \usepackage{float}
+  - \floatsetup[figure]{capposition=top}
+  - \floatsetup[table]{capposition=top}
+  - \floatplacement{figure}{H}
+  - \floatplacement{table}{h}
+  - \usepackage{graphicx}
+  - \usepackage{booktabs}
+  - \usepackage{longtable}
+  - \usepackage{array}
+  - \usepackage{multirow}
+  - \usepackage{wrapfig}
+  - \usepackage{colortbl}
+  - \usepackage{pdflscape}
+  - \usepackage{tabu}
+  - \usepackage{fancyhdr}
+  - \fancyhead{} 
+---
+
+\pagebreak 
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = F,
+                      warning = F,
+                      error = F, 
+                      message = F) 
+```
+
+```{r paquetes, echo=FALSE}
+if (! require("pacman")) install.packages("pacman")
+
+pacman::p_load(tidyverse,
+               rio,
+               here,
+               vtable, 
+               kableExtra,
+               sjPlot,
+               sjmisc,
+               estimatr,
+               panelr,
+               plm,
+               clubSandwich,
+               texreg)
+
+options(scipen=999)
+rm(list = ls())
+```
+
+```{r datos, echo=FALSE}
+db_or <- rio::import(file = here("input", "data", "EVS_main.csv")) %>% 
+  as_tibble()
+
+```
+
+```{r funciones, echo=FALSE}
+
+miles <- function(x) {
+  format(round(as.numeric(x),0), big.mark = ".")
+}
+
+decimales <- function(x) {
+  format(round(as.numeric(x), 2), decimal.mark = ",")
+}
+
+custom_extract <- function(model) {
+  tr <- extract(model)
+  
+  # Identificar índices a conservar (excluyendo "R$^2$", "s_idios" y "s_id")
+  gof_indices <- which(!(tr@gof.names %in% c("R$^2$", "s_idios", "s_id")))
+  
+  # Actualizar gof, gof.names y gof.decimal simultáneamente
+  tr@gof.names <- tr@gof.names[gof_indices]
+  tr@gof <- tr@gof[gof_indices]
+  tr@gof.decimal <- tr@gof.decimal[gof_indices]
+  
+  return(tr)
+}
+# set theme
+
+theme_nice <- function() {
+  theme_bw() +
+    theme(text = element_text(family = "serif"))
+  
+  
+}
+
+theme_set(theme_nice())
+
+```
+
+```{r include=FALSE}
+# Seleccionar
+
+db <- db_or %>%
+  dplyr::select(intolerance, Distance, prop_jewish25,
+                unemployment33, nazishare33, state) %>% 
+  janitor::clean_names()
+
+# Filtrar: No
+
+# Recodificar 
+sjmisc::frq(db$state)
+db$state <- as.factor(db$state)
+
+# Tratamiento casos perdidos
+colSums(is.na(db)) # no NA
+
+# Transformar y derivar: No
+```
+
+
+# Pregunta 1
+
+Para estimar el efecto de la distancia en la intolerancia, Pepinsky et al. [-@pepinsky_modeling_2023] sostienen que es necesario controlar por efectos fijos para Estados. Al respecto y en base a su lectura del texto:
+
+a) Señale qué tipo de características son controladas por estos efectos fijos.
+
+
+
+[-@pepinsky_modeling_2023]
+- Heterogenidad no observada, que corresponden a características constantes en el tiempo de los individuos pero que sin embargo varían entre ellos. Estas características son economicas e institucionales y politicas. En detalle, pueden incluir la cultura política, organizaciones de la sociedad civil o tradiciones politico-religiosas. 
+
+
+b) Señale y explique las condiciones bajos las cuales estos efectos fijos serían buenos controles.
+
+# Pregunta 2
+
+Considere el gráfico 2(b) de la figura 2 en Pepinsky et al. [-@pepinsky_modeling_2023]. En este caso, explique por qué controlar por $F$ genera sesgo:
+
+De acuerdo con el supuesto 1, para que controlar por el confounder $F$ no induzca sesgo de postratamiento, es vital que esta variable confounder $F$ no sea descendiente del tratamiento $T$. En otras palabras, este supuesto indica que, para que controlar por el confounder no sea problemático, el tratamiento no debe afectar al confounder.
+
+Sin embargo, incluso cuando el supuesto 1 se cumpla, controlar por $F$ de todas maneras puede generar un sesgo de colisión: "El supuesto 1 excluye la forma más simple de sesgo del colisionador en la que $F$ es descendiente tanto de $T$ como de $Y$" [@pepinsky_modeling_2023, p.3]. Por ello, los autores proponen un segundo supuesto respecto a que controlar por $F$ no genere M-bias. Este supuesto 2 sostiene que $F$ no es descendiente de (a) ninguna variable $U_1$ de la cual $T$ también sea descendiente ni (b) ninguna variable $U_2$ de la cual $Y$ también sea descendiente.
+
+En consecuencia, dado que: (i) $F$ es descendiente de $U_1$ del cual $T$ también lo es, y (ii) $F$ es descendiente de $U_2$ del cual $Y$ también lo es, controlar por $F$ produciría un sesgo que es controlar por una variable colisionadora. Al condicionar por $F$, se abre un camino no causal entre $T$ y $Y$ a través de $U_1$, creando una asociación espuria entre $T$ y $Y$ que no existiría si no se condicionara por $F$.
+
+
+# Pregunta 3
+
+Estime los modelos 1, 2, 3 y 4 de Table 1 en Pepinsky et al. [-@pepinsky_modeling_2023]. Específicamente:
+
+a) Reporte sus resultados en una tabla de calidad similar a la Table 1 del artículo bajo replicación. Use las covariables mencionadas arriba.[^1]
+
+```{r include=FALSE}
+
+# FE con LSDV
+m1 <- lm(formula = intolerance ~ distance, 
+         data = db)
+
+m2 <- lm(formula = intolerance ~ distance + state, 
+         data = db)
+
+m3 <- lm(formula = intolerance ~ distance + prop_jewish25 +
+         unemployment33 + nazishare33, data = db) 
+
+m4 <- lm(formula = intolerance ~ distance + prop_jewish25 +
+         unemployment33 + nazishare33 + state, data = db) 
+
+models <- list(m1, m2, m3, m4)
+
+models1 <- map(models, custom_extract)
+
+#lm_robust(formula = intolerance ~ distance,
+#          data = db,
+#          clusters = state, 
+#         se_type = "CR2",
+#          fixed_effects = ~ state)
+
+#coef_test(m2, vcov = "CR2", cluster = db$state)
+
+#plm(formula = intolerance ~ distance, 
+#    data = db, 
+#    model = "within", 
+#    index = "state")
+
+```
+
+
+```{r table1, echo=FALSE, results='asis'}
+ccoef <- list(
+  distance = "Distancia al campo",
+  prop_jewish25 = "% Judíos (1925)",
+  unemployment33 = "% Desempleo (1933)",
+  nazishare33 = "Participación partido nazi (1933)"
+  )
+
+texreg::texreg(l = models1,
+               caption = paste("(\\#tab:table1)","Replicación de modelos Pepinsky et al. (2023)"),
+               stars = c(0.05, 0.01),
+               custom.note = "Nota: Las celdas contienen coeficientes de regresión con errores estándar entre paréntesis. %stars",
+               custom.model.names = c("Modelo 1", "Modelo 2", "Modelo 3", "Modelo 4"),
+               custom.coef.map = ccoef,
+               leading.zero = T,
+               float.pos = "h!",
+               use.packages = F,
+               booktabs = TRUE,
+               scalebox = 0.90,
+               digits = 3,
+               custom.gof.rows = list("Länder FE" = c("No", "Si", "No","Si"),
+                                      "Método" = rep("OLS", 4)))
+
+
+```
+
+
+b) Señale a lo menos 2 diferencias conceptuales entre los modelos 3 y 4.
+
+- En Modelo 4 se usan efectos fijos para los Estados, mientras que en 3 no. Las implicancias de esto
+- 
+
+
+# Pregunta 4
+
+Pepinsky et al. [-@pepinsky_modeling_2023] sostienen que controlar por efectos fijos para Estados sería problemático si la variable causal de interés varía principalmente entre los Estados. Para evaluar empíricamente este tema, los autores estiman una serie de tests de Hausman y reportan los resultados en la Table A2 del Appendix D. Al respecto y usando intolerancia como variable dependiente, replique los modelos 1, 2 y 3 del Panel A de la Table A2. Reporte sus resultados en una tabla como la Table A2 e interprete los resultados de los tests de Hausman, indicando diferencias sustantivas/conceptuales entre los modelos que están siendo comparados.[^2] 
+
+
+```{r table2, echo=FALSE, results='asis'}
+
+m_pooled <- plm(formula = intolerance ~ distance, data = db,
+                model = "pooling", index = "state")
+
+m_re <- plm(formula = intolerance ~ distance, data = db,
+            model = "random", index = "state")
+
+m_fe <- plm(formula = intolerance ~ distance, data = db,
+            model = "within", index = "state")
+
+hausman_re_pooled <- plm::phtest(m_re, m_pooled)
+
+hausman_fe_pooled <- plm::phtest(m_fe, m_pooled)
+
+hausman_fe_re <- plm::phtest(m_fe, m_re)
+
+models <- list(m_pooled, m_re, m_fe)
+
+models2 <- map(models, custom_extract)
+
+texreg::texreg(l = models2,
+          stars = c(0.05, 0.01),
+          leading.zero = T,
+          float.pos = "h!",
+          use.packages = F,
+          booktabs = TRUE,
+          scalebox = 0.90,
+          digits = 3,
+          caption = paste("(\\#tab:table2)","Replicación de test de Hausman Pepinsky et al. (2023)"),
+          custom.note = "Nota: Las celdas contienen coeficientes de regresión con errores estándar entre paréntesis. %stars",
+          custom.model.names = c("Modelo 1", "Modelo 2", "Modelo 3"),
+          custom.coef.map = list(distance = "Distancia al campo"),
+          custom.gof.rows = list("Método" = c("Pooled", "RE", "FE"),
+                                 "RE v Pooled" = c("",  round(hausman_re_pooled$p.value, 3), ""),
+                                 "FE v Pooled" = c("",  round(hausman_fe_pooled$p.value, 3), ""),
+                                 "FE v RE" = c("",  round(hausman_fe_re$p.value, 3), "")),
+        )
+
+```
+
+# Referencias
+
+::: {#refs}
+:::
+
+[^1]: Note que no debe incluir como variable independiente la población en 1925 y que debe utilizar el estimador least-squares-dummy-variables-estimator (LSDV) para su modelo con efectos fijos.
+
+[^2]: Note que no debe incluir covariables.
