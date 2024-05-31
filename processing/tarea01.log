@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.5.29)  30 MAY 2024 00:39
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.5.29)  31 MAY 2024 18:31
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -694,16 +694,13 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <8> on input line 184.
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <6> on input line 184.
+[2{/Users/macbookair/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 201.
+(Font)              <5> on input line 208.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[2{/Users/macbookair/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/Users/macbookair/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}]
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-[3{/Users/macbookair/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}] [4] (./tarea01.aux)
+[3{/Users/macbookair/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}] [4{/Users/macbookair/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}] [5] [6] (./tarea01.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-05-08>
@@ -714,17 +711,17 @@ LaTeX Warning: There were multiply-defined labels.
  ) 
 Here is how much of TeX's memory you used:
  16867 strings out of 475953
- 272748 string characters out of 5789127
- 1945904 words of memory out of 5000000
- 38768 multiletter control sequences out of 15000+600000
- 614035 words of font info for 94 fonts, out of 8000000 for 9000
+ 272731 string characters out of 5789127
+ 1942904 words of memory out of 5000000
+ 38764 multiletter control sequences out of 15000+600000
+ 613721 words of font info for 93 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 83i,13n,93p,777b,591s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 83i,13n,93p,1602b,589s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </Users/macbookair/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi12.pfb></Users/macbookair/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi8.pfb></Users/macbookair/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb></Users/macbookair/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb></Users/macbookair/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></Users/macbookair/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy6.pfb></Users/macbookair/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy8.pfb></Users/macbookair/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></Users/macbookair/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></Users/macbookair/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on tarea01.pdf (4 pages, 166241 bytes).
+Output written on tarea01.pdf (6 pages, 178693 bytes).
 PDF statistics:
- 134 PDF objects out of 1000 (max. 8388607)
- 104 compressed objects within 2 object streams
- 25 named destinations out of 1000 (max. 500000)
+ 159 PDF objects out of 1000 (max. 8388607)
+ 127 compressed objects within 2 object streams
+ 29 named destinations out of 1000 (max. 500000)
  46 words of extra memory for PDF output out of 10000 (max. 10000000)
 
