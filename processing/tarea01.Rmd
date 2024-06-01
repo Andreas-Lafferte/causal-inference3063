@@ -242,9 +242,10 @@ texreg::texreg(l = models1,
 
 b) Señale a lo menos 2 diferencias conceptuales entre los modelos 3 y 4.
 
-En la Tabla \@ref(tab:table1) se presentan los modelos replicados de Pepinsky et al. [-@pepinsky_modeling_2023]. Por un lado, el Modelo 3 utiliza un estimador OLS combinado (pooled OLS), que combina todos los datos sin considerar los efectos específicos de cada unidad y asume independencia entre las observaciones. Esto puede resultar en estimaciones menos eficientes y sesgadas debido a la heterogeneidad no observada entre los Estados, subestima los errores estándar y entrega pruebas estadísticas muy elevadas con valores p muy bajos [-@wooldridge_introductory_2009]. Por otro lado, el Modelo 4 incorpora efectos fijos de los Estados, lo que permite controlar y capturar la variabilidad específica de cada Estado en la estimación del efecto. Al incluir los efectos fijos de los Estados, se mejora la eficiencia de las estimaciones al tener en cuenta las características únicas de cada Estado y al controlar por la heterogeneidad no observada que podría influir en la relación entre la distancia a los campos de concentración y la intolerancia.
+En la Tabla \@ref(tab:table1) se presentan los modelos replicados de Pepinsky et al. [-@pepinsky_modeling_2023]. Por un lado, el Modelo 3 utiliza un estimador OLS combinado (pooled OLS), que combina todos los datos sin considerar los efectos específicos de cada unidad y asume independencia entre las observaciones. Esto puede resultar en estimaciones menos eficientes y sesgadas debido a la heterogeneidad no observada entre los Estados, subestima los errores estándar y entrega pruebas estadísticas muy elevadas con valores p muy bajos [-@wooldridge_introductory_2009]. Por otro lado, el Modelo 4 incorpora efectos fijos de los Estados, lo que permite controlar y capturar la variabilidad específica de cada Estado en la estimación del efecto. Al incluir los efectos fijos de los Estados, se mejora la eficiencia de las estimaciones al tener en cuenta las características únicas de cada Estado y al controlar por la heterogeneidad no observada que podría influir en la relación entre la distancia a los campos de concentración y la intolerancia. Con esto, en el Modelo 4 el coeficiente de la distancia al campo no solo deja de ser estadísticamente significativo, sino que también da vuelta el signo a positivo. 
 
-Además, el Modelo 4 con efectos fijos de los Estados también permite controlar de manera más efectiva los posibles factores de confusión no observados a nivel estatal que podrían influir en la relación entre la distancia a los campos de concentración y la intolerancia. Al incluir los efectos fijos, se tiene en cuenta la influencia de todas las características específicas de cada Estado que podrían estar correlacionadas con la variable independiente (distancia a los campos de concentración). Esto ayuda a mitigar el riesgo de sesgo causado por variables omitidas a nivel estatal que podrían distorsionar la estimación del efecto causal. En definitiva, la inclusión de efectos fijos por Estado en el Modelo 4 no solo mejora la eficiencia de las estimaciones, sino que también contribuye a controlar de mejor manera los posibles factores de confusión no observados a nivel estatal, fortaleciendo la validez interna de la relación causal investigada al explotar la varianza _within_ [-@wooldridge_introductory_2009].
+
+Además, el Modelo 4 con efectos fijos de los Estados también permite controlar de manera más efectiva los posibles factores de confusión no observados a nivel estatal que podrían influir en la relación entre la distancia a los campos de concentración y la intolerancia. Al incluir los efectos fijos, se tiene en cuenta la influencia de todas las características específicas de cada Estado que podrían estar correlacionadas con la variable independiente (distancia a los campos de concentración). Esto ayuda a mitigar el riesgo de sesgo causado por variables omitidas a nivel estatal que podrían distorsionar la estimación del efecto causal. En definitiva, la inclusión de efectos fijos por Estado en el Modelo 4 no solo mejora la eficiencia de las estimaciones, sino que también contribuye a controlar de mejor manera los posibles factores de confusión no observados a nivel estatal, fortaleciendo la validez interna de la relación causal investigada al explotar la varianza _within_ [@wooldridge_introductory_2009].
 
 
 # Pregunta 4
@@ -314,3 +315,13 @@ En definitva, si se tienen buenas razones para considerar que no hay correlació
 [^1]: Note que no debe incluir como variable independiente la población en 1925 y que debe utilizar el estimador least-squares-dummy-variables-estimator (LSDV) para su modelo con efectos fijos.
 
 [^2]: Note que no debe incluir covariables.
+
+\pagebreak
+
+# Código de R
+
+
+```{r ref.label=knitr::all_labels(), echo=TRUE, eval=FALSE} 
+
+```
+
