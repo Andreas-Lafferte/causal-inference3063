@@ -126,7 +126,7 @@ theme_set(theme_nice())
 
 db <- db_or %>%
   dplyr::select(intolerance, Distance, prop_jewish25,
-                unemployment33, nazishare33, state) %>% 
+                unemployment33, nazishare33, state, population25) %>% 
   janitor::clean_names()
 
 # Filtrar: No
@@ -303,7 +303,7 @@ Por otro lado, un modelo con estimador de efectos fijos (EF) incluye un término
 
 Por último, el modelo de efectos aleatorios (EA) es similar al de EF en cuanto a sus supuestos, pero agrega uno adicional: que no existe correlación entre los factores no observados y las covariables. Sustantivamente, en el caso de Pepinsky et al. [-@pepinsky_modeling_2023], emplear un estimador EA implica asumir que las características no observadas de los Estados no se correlacionan con ninguna covariable en ningún periodo. Esto permite en los modelos EA incluir variables constantes en el tiempo y estimar sus efectos, además de permitir correlación serial. Sin embargo, si la correlación entre los efectos no observados y las covariables es significativa, las estimaciones del modelo EA serán sesgadas e inconsistentes.
 
-En definitva, si se tienen buenas razones para considerar que no hay correlación entre el término $\alpha_i$ y los predictores $X_{it}$ en todos los periodos, es posible emplear un EA; de lo contrario, es preferible utilizar un EF. Además, el uso de efectos fijos es generalmente más robusto cuando se quiere controlar por la heterogeneidad no observada que es constante en el tiempo pero varía entre unidades. En contraste, el modelo OLS combinado es el más sencillo pero también el más propenso a proporcionar estimaciones sesgadas y menos eficientes.
+En definitva, si se tienen buenas razones para considerar que no hay correlación entre el término $\alpha_i$ y los predictores $X_{it}$ en todos los periodos, es posible emplear un EA; de lo contrario, es preferible utilizar un EF.[^3] Además, el uso de efectos fijos es generalmente más robusto cuando se quiere controlar por la heterogeneidad no observada que es constante en el tiempo pero varía entre unidades. En contraste, el modelo OLS combinado es el más sencillo pero también el más propenso a proporcionar estimaciones sesgadas y menos eficientes.
 
 
 
@@ -315,6 +315,8 @@ En definitva, si se tienen buenas razones para considerar que no hay correlació
 [^1]: Note que no debe incluir como variable independiente la población en 1925 y que debe utilizar el estimador least-squares-dummy-variables-estimator (LSDV) para su modelo con efectos fijos.
 
 [^2]: Note que no debe incluir covariables.
+
+[^3]: Sustantivamente, en el artículo esto implica que la mayor parte de la varianza es entre los Estados y no dentro de ellos. 
 
 \pagebreak
 
