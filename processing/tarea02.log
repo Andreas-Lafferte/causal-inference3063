@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.6.17)  24 JUN 2024 21:16
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.6.28)  29 JUN 2024 02:19
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **tarea02.tex
 (./tarea02.tex
-LaTeX2e <2024-06-01> patch level 1
+LaTeX2e <2024-06-01> patch level 2
 L3 programming layer <2024-05-27>
 (/Users/macbookair/Library/TinyTeX/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2024/02/08 v1.4n Standard LaTeX document class
@@ -556,9 +556,6 @@ File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
 \l__pdf_internal_box=\box72
 ) (./tarea02.aux
 
-LaTeX Warning: Label `tab:table1' multiply defined.
-
-
 LaTeX Warning: Label `table:coefficients' multiply defined.
 
 
@@ -683,101 +680,108 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 [1
 
 {/Users/macbookair/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/Users/macbookair/Library/TinyTeX/texmf-dist/fonts/enc/dvips/base/8r.enc} <../img/logo_isuc.png>]
-<tarea02_files/figure-latex/daghtp-1.pdf, id=16, 469.755pt x 325.215pt>
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <12> on input line 191.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <8> on input line 191.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <6> on input line 191.
+<tarea02_files/figure-latex/daghtp-1.pdf, id=27, 469.755pt x 325.215pt>
 File: tarea02_files/figure-latex/daghtp-1.pdf Graphic file (type pdf)
 <use tarea02_files/figure-latex/daghtp-1.pdf>
-Package pdftex.def Info: tarea02_files/figure-latex/daghtp-1.pdf  used on input line 192.
-(pdftex.def)             Requested size: 362.37598pt x 250.87286pt.
-LaTeX Font Info:    Trying to load font information for T1+pcr on input line 198.
+Package pdftex.def Info: tarea02_files/figure-latex/daghtp-1.pdf  used on input line 196.
+(pdftex.def)             Requested size: 385.02577pt x 266.55396pt.
+
+
+[2{/Users/macbookair/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/Users/macbookair/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}]
+LaTeX Font Info:    Trying to load font information for T1+pcr on input line 206.
 (/Users/macbookair/Library/TinyTeX/texmf-dist/tex/latex/psnfss/t1pcr.fd
 File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
 )
+
+[3 <./tarea02_files/figure-latex/daghtp-1.pdf>]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 235.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 235.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 235.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 235.
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
+(Font)              <5> on input line 243.
 
 
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-
-
-[2 <./tarea02_files/figure-latex/daghtp-1.pdf>]
-
-[3{/Users/macbookair/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/Users/macbookair/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/Users/macbookair/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}]
-
-[4]
+[4{/Users/macbookair/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}]
 
 [5]
-LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <12> not available
-(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 417.
-
-Overfull \vbox (1.40485pt too high) detected at line 644
- []
-
-
 
 [6]
-Underfull \vbox (badness 10000) detected at line 644
- []
 
-
-Underfull \vbox (badness 10000) detected at line 644
- []
+LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 
 
 [7]
-Underfull \vbox (badness 10000) detected at line 644
- []
-
-
-Underfull \vbox (badness 10000) detected at line 644
- []
-
-
 
 [8]
-Underfull \vbox (badness 10000) detected at line 644
- []
-
-
-Underfull \vbox (badness 10000) detected at line 644
- []
-
-
 
 [9]
-Underfull \vbox (badness 10000) detected at line 644
- []
+LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <12> not available
+(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 469.
 
-
-Underfull \vbox (badness 10000) detected at line 644
+Overfull \vbox (1.40485pt too high) detected at line 704
  []
 
 
 
 [10]
-Underfull \vbox (badness 10000) detected at line 644
+Underfull \vbox (badness 10000) detected at line 704
  []
 
 
-Underfull \vbox (badness 10000) detected at line 644
+Underfull \vbox (badness 10000) detected at line 704
  []
 
 
 
 [11]
+Underfull \vbox (badness 10000) detected at line 704
+ []
 
-[12] (./tarea02.aux)
+
+Underfull \vbox (badness 10000) detected at line 704
+ []
+
+
+
+[12]
+Underfull \vbox (badness 10000) detected at line 704
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 704
+ []
+
+
+
+[13]
+Underfull \vbox (badness 10000) detected at line 704
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 704
+ []
+
+
+
+[14]
+Underfull \vbox (badness 10000) detected at line 704
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 704
+ []
+
+
+
+[15]
+
+[16] (./tarea02.aux)
  ***********
-LaTeX2e <2024-06-01> patch level 1
+LaTeX2e <2024-06-01> patch level 2
 L3 programming layer <2024-05-27>
  ***********
 
@@ -785,18 +789,18 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 17030 strings out of 475560
- 275185 string characters out of 5776795
- 1956905 words of memory out of 5000000
- 39311 multiletter control sequences out of 15000+600000
- 615594 words of font info for 98 fonts, out of 8000000 for 9000
+ 17059 strings out of 475544
+ 275582 string characters out of 5776421
+ 1958905 words of memory out of 5000000
+ 39340 multiletter control sequences out of 15000+600000
+ 621514 words of font info for 103 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 83i,13n,93p,782b,589s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 83i,13n,93p,1568b,589s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </Users/macbookair/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi12.pfb></Users/macbookair/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi8.pfb></Users/macbookair/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb></Users/macbookair/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb></Users/macbookair/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></Users/macbookair/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy6.pfb></Users/macbookair/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy8.pfb></Users/macbookair/Library/TinyTeX/texmf-dist/fonts/type1/urw/courier/ucrb8a.pfb></Users/macbookair/Library/TinyTeX/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></Users/macbookair/Library/TinyTeX/texmf-dist/fonts/type1/urw/courier/ucrro8a.pfb></Users/macbookair/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></Users/macbookair/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></Users/macbookair/Library/TinyTeX/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on tarea02.pdf (12 pages, 226032 bytes).
+Output written on tarea02.pdf (16 pages, 251239 bytes).
 PDF statistics:
- 218 PDF objects out of 1000 (max. 8388607)
- 172 compressed objects within 2 object streams
- 45 named destinations out of 1000 (max. 500000)
- 67 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 299 PDF objects out of 1000 (max. 8388607)
+ 248 compressed objects within 3 object streams
+ 59 named destinations out of 1000 (max. 500000)
+ 91 words of extra memory for PDF output out of 10000 (max. 10000000)
 
