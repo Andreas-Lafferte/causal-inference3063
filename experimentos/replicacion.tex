@@ -1,0 +1,545 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  13pt,
+  a4paper,
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{setspace}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[left=2.54cm,right=2.54cm,top=2.54cm,bottom=2.54cm]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newlength{\cslentryspacingunit} % times entry-spacing
+\setlength{\cslentryspacingunit}{\parskip}
+\newenvironment{CSLReferences}[2] % #1 hanging-ident, #2 entry spacing
+ {% don't indent paragraphs
+  \setlength{\parindent}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1
+  \let\oldpar\par
+  \def\par{\hangindent=\cslhangindent\oldpar}
+  \fi
+  % set entry spacing
+  \setlength{\parskip}{#2\cslentryspacingunit}
+ }%
+ {}
+\usepackage{calc}
+\newcommand{\CSLBlock}[1]{#1\hfill\break}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{#1}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{#1}\break}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
+\ifLuaTeX
+\usepackage[bidi=basic]{babel}
+\else
+\usepackage[bidi=default]{babel}
+\fi
+\babelprovide[main,import]{american}
+% get rid of language-specific shorthands (see #6817):
+\let\LanguageShortHands\languageshorthands
+\def\languageshorthands#1{}
+\usepackage{titling}
+\pretitle{\begin{center}\LARGE\includegraphics[width=7cm]{../img/logo_isuc.png}\\[\bigskipamount]}
+\posttitle{\end{center}}
+\usepackage{times}
+\usepackage{caption}
+\usepackage{floatrow}
+\usepackage{float}
+\floatsetup[figure]{capposition=top}
+\floatsetup[table]{capposition=top}
+\floatplacement{figure}{H}
+\floatplacement{table}{h}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{fancyhdr}
+\fancyhead{}
+\usepackage{threeparttable}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  pdflang={en-US},
+  colorlinks=true,
+  linkcolor={gray},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\title{\vspace{2cm} Replicación: Cultural Heterogeneity in Americans' Definitions of Racism, Sexism, and Classism: Results from a Mixed-Methods Study}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{Lauren Valentino \& Evangeline Warren (2025)\\
+\vspace{2cm} Diseño y análisis de experimentos aleatorizados en cs. - FCS3001}
+\author{~Estudiantes: Ignacia Devia, Sebastián Budenivch y Andreas Laffert\\
+\hspace*{0.333em}Profesor Luis Maldonado\\
+\vspace{7cm}}
+\date{lunes 30, junio 2025}
+
+\begin{document}
+\maketitle
+
+\setstretch{1.15}
+\pagebreak
+
+\hypertarget{tema-y-pregunta-de-investigaciuxf3n}{%
+\section{Tema y pregunta de investigación}\label{tema-y-pregunta-de-investigaciuxf3n}}
+
+El estudio de Valentino y Warren (\protect\hyperlink{ref-valentino_cultural_2025}{2025}) busca examinar cómo los estadounidenses atribuyen significados a los conceptos de racismo, clasismo y sexismo, debido a que la medición de estos tres fenómenos ha sido de debate teórico y metodológico antes que centrado en las percepciones concretas de los individuos. Para ello, deciden alejarse de los conceptos académicos y centrarse en cómo los ciudadanos estadounidense comunes significan estos tres fenómenos. En consecuencia, el artículo busca responder dos preguntas principales: 1) ¿Cómo definen los estadounidenses los conceptos de racismo, sexismo y clasismo, y de qué manera varían estas definiciones según características sociodemográficas?, y 2) ¿Qué relación existe entre estas definiciones y sus actitudes sociopolíticas y preferencias por políticas públicas?
+
+\hypertarget{motivaciuxf3n-y-justificaciuxf3n-del-estudio}{%
+\section{Motivación y justificación del estudio}\label{motivaciuxf3n-y-justificaciuxf3n-del-estudio}}
+
+El texto plantea que en la discusión más general sobre discriminación se señala la importancia y escasa investigación empírica que dé cuenta de los procesos de evaluación perceptual que utilizan las personas de Estados Unidos para juzgar y categorizar algo como clasismo/racismo/sexismo o no (\protect\hyperlink{ref-valentino_cultural_2025}{Valentino \& Warren, 2025}). Los autores, a este respecto, afirman que hay una brecha y distancia entre cómo los académicos definen y miden estos conceptos --ya sea en base a experiencia autopercibida o situaciones más implícitas- y cómo la gente entiende y percibe estos fenómenos. Esto produce problemas en la validez de las mediciones de las encuestas al asumir que las personas tienen igual o similares perspectivas de los significados de cada uno de estos fenómenos. Por lo mismo, emplean un enfoque cultural y cognitivo para observar la heterogeneidad cultural y polisemia del clasismo, sexismo y racismo, y cómo estas formas de definir dependen de sus características sociodemográficas (ideología, género, edad, ingresos, raza). Además, estas teorías populares de definición de los tres fenómenos moldean las opiniones sociopolíticas de los estadounidenses tales como las actitudes intergrupales, preferencias de redistribución, apoyo a leyes y políticas antidiscriminatorias (\protect\hyperlink{ref-valentino_cultural_2025}{Valentino \& Warren, 2025}).
+
+\hypertarget{hipuxf3tesis-por-replicar}{%
+\section{Hipótesis por replicar}\label{hipuxf3tesis-por-replicar}}
+
+La hipótesis por replicar se relaciona con que las definiciones personales de estos conceptos (racismo, sexismo y clasismo) predicen/afectan actitudes sociopolíticas y apoyo a políticas públicas antidiscriminatorias, incluso controlando por características demográficas y opiniones políticas generales.
+
+\hypertarget{diseuxf1o-del-estudio-original-de-valentino-y-warren-2025}{%
+\section{Diseño del estudio original de Valentino y Warren (2025)}\label{diseuxf1o-del-estudio-original-de-valentino-y-warren-2025}}
+
+Valentino y Warren (\protect\hyperlink{ref-valentino_cultural_2025}{2025}) emplean un enfoque de métodos mixtos secuenciales para explorar cómo las personas comunes en Estados Unidos comprenden el racismo, el sexismo y el clasismo, y cómo estas definiciones perceptuales varían según atributos sociodemográficos y predicen actitudes sociopolíticas. El diseño combina una fase cualitativa inductiva y una fase cuantitativa deductiva, integrando herramientas propias de la sociología cultural y de la investigación experimental.
+
+\hypertarget{fase-cualitativa-entrevistas-y-fronteras-simbuxf3licas}{%
+\subsection{Fase cualitativa: entrevistas y fronteras simbólicas}\label{fase-cualitativa-entrevistas-y-fronteras-simbuxf3licas}}
+
+En la fase cualitativa, los autores realizaron 40 entrevistas semiestructuradas a residentes de una ciudad del Medio Oeste y sus alrededores, reclutados mediante redes sociales como Facebook y MeetUp. De un total de 1,378 personas interesadas, se aplicó muestreo por cuotas para garantizar diversidad en raza, género, nivel educativo, edad y orientación política. Las entrevistas se condujeron de forma remota por restricciones sanitarias derivadas de la pandemia, con una duración media de una hora, y fueron posteriormente transcritas, anonimizadas y codificadas en Dedoose.
+
+El enfoque metodológico se inspiró en el concepto de fronteras simbólicas de Lamont y Molnár (\protect\hyperlink{ref-lamont_study_2002}{2002}): en lugar de solicitar definiciones abstractas, los entrevistadores pidieron a los participantes que identificaran ejemplos de situaciones que sí y que no consideraban como discriminación. Esta técnica permite observar cómo las personas trazan límites conceptuales en tiempo real, sin requerir que los justifiquen verbalmente. Así, se estudian las distinciones implícitas que las personas hacen para categorizar experiencias como racistas, sexistas o clasistas, revelando los criterios normativos que operan en su razonamiento cotidiano. Este procedimiento cualitativo se inserta en el marco de un enfoque cultural de la desigualdad, que busca comprender cómo los mecanismos micro-subjetivos de categorización intervienen en la (re)producción de desigualdades sociales más amplias (\protect\hyperlink{ref-lamont_study_2002}{Lamont \& Molnár, 2002}). En línea con este enfoque, los hallazgos revelaron tres dimensiones fundamentales que estructuran las percepciones de discriminación:
+
+\begin{itemize}
+\tightlist
+\item
+  Intencionalidad del acto (deliberado vs.~accidental),
+\item
+  Tipo de desigualdad (trato desigual vs.~resultados desiguales),
+\item
+  Diferencias de poder entre los grupos implicados.
+\end{itemize}
+
+Estas categorías inductivas sirvieron como base para construir el diseño experimental de la fase cuantitativa.
+
+\hypertarget{fase-cuantitativa-experimento-factorial-con-viuxf1etas}{%
+\subsection{Fase cuantitativa: experimento factorial con viñetas}\label{fase-cuantitativa-experimento-factorial-con-viuxf1etas}}
+
+A partir de los patrones detectados en las entrevistas, los autores (\protect\hyperlink{ref-valentino_cultural_2025}{2025}) diseñaron un experimento factorial implementado mediante encuesta nacional con 2,000 participantes representativos, reclutados a través de YouGov. Cada persona evaluó nueve viñetas de escenarios potenciales: tres sobre racismo, tres sobre sexismo y tres sobre clasismo, todas derivadas de ejemplos reales mencionados en la fase cualitativa. Estas viñetas presentan versiones diferentes que manipulan sistemáticamente una de las tres dimensiones clave (intencionalidad, tipo de desigualdad o poder del grupo afectado):
+
+\begin{itemize}
+\tightlist
+\item
+  Intencionalidad del acto\\
+\item
+  No intencionalidad del acto\\
+\item
+  Trato desigual con resultado igualitario\\
+\item
+  Trato igualitario con resultado desigual\\
+\item
+  Grupo poderoso vs.~no poderoso afectado
+\end{itemize}
+
+En total, el diseño factorial fraccionado produjo 45 combinaciones posibles (9 temas × 5 versiones). A cada encuestado se le asignó aleatoriamente una versión por tema, y según los autores se buscó asegurar un balance entre las condiciones para que fueran respondidas por un número suficiente de encuestados (\protect\hyperlink{ref-valentino_cultural_2025}{Valentino \& Warren, 2025, p. 860}). Las viñetas fueron validadas en un estudio piloto, donde más del 80 \% de los participantes las consideraron realistas y comprensibles.
+
+La variable dependiente principal fue la calificación del grado de discriminación percibida en cada viñeta (appraisal), medida en una escala de 0 a 100. También recolectaron información sociodemográfica básica de los participantes. Posteriormente al experimento, se recolectaron datos sobre actitudes políticas estandarizadas (como apoyo a políticas antidiscriminatorias), permitiendo vincular los juicios perceptivos con orientaciones normativas.
+
+\hypertarget{el-diseuxf1o-como-encuesta-factorial}{%
+\subsubsection{El diseño como encuesta factorial}\label{el-diseuxf1o-como-encuesta-factorial}}
+
+El estudio de Valentino y Warren (\protect\hyperlink{ref-valentino_cultural_2025}{2025}) puede alinearse con el enfoque clásico de encuestas factoriales desarrollado por investigaciones empíricas sobre justicia distributiva (\protect\hyperlink{ref-jasso_factorial_2006}{Jasso, 2006}), que distinguen tres tipos de ecuaciones: (1) creencias positivas sobre el mundo (``qué es''), (2) juicios normativos (``qué debería ser'') y (3) las consecuencias conductuales de esos juicios. En este marco, los autores estiman ecuaciones del segundo y tercer tipo, donde la calificación de discriminación representa un juicio moral normativo que depende de los atributos manipulados, y luego se espera que tales definiciones afecten actitudes sociopolíticas.
+
+El uso de viñetas basadas en experiencias reales y su manipulación sistemática buscan estudiar cómo las personas llegan a sus juicios a partir de combinaciones complejas de atributos sociales. El modelo factorial permite estimar tanto efectos promedio (\(ATEs\)) como efectos condicionales (\(CATEs\)) al interactuar las dimensiones manipuladas con características del encuestado. Además, el diseño de Valentino y Warren (\protect\hyperlink{ref-valentino_cultural_2025}{2025}) ilustra virtudes clave de los experimentos factoriales, como su capacidad para aislar mecanismos causales complejos y su validez externa reforzada por la naturalidad contextual de las viñetas (\protect\hyperlink{ref-auspurg_factorial_2015}{Auspurg \& Albanese, 2015}; \protect\hyperlink{ref-treischl_present_2022}{Treischl \& Wolbring, 2022}).
+
+\hypertarget{estimands-y-estimandos}{%
+\subsection{Estimands y estimandos}\label{estimands-y-estimandos}}
+
+Los estimands centrales del estudio son:
+
+\begin{itemize}
+\tightlist
+\item
+  Los efectos causales promedio (\(ATEs\)) de cada atributo manipulado sobre la calificación de discriminación,
+\item
+  Efectos condicionales (\(CATEs\)) por subgrupos sociodemográficos,
+\item
+  La interacción entre el appraisal y las condiciones experimentales (e.g., treatvscons) como predictores de actitudes políticas.
+\end{itemize}
+
+Los estimandos se obtienen mediante regresiones lineales OLS con errores clusterizados por individuo y ponderaciones muestrales, estimando también efectos marginales con el comando \emph{margins} de STATA.
+
+\hypertarget{estrategia-de-anuxe1lisis-para-la-replicaciuxf3n}{%
+\section{Estrategia de análisis para la replicación}\label{estrategia-de-anuxe1lisis-para-la-replicaciuxf3n}}
+
+Para esta replicación, emplearemos los mismos modelos y métodos utilizados por Valentino y Warren (\protect\hyperlink{ref-valentino_cultural_2025}{2025}), con algunos ajustes que me permitirán evaluar la robustez de sus resultados y explorar posibles sesgos por múltiples comparaciones en el efecto de la interacción entre appraisal y los factores experimentales (desigualdad en el trato vs.~en el resultado) sobre actitudes sociopolíticas (Tabla 6 del artículo).
+
+\hypertarget{modelos-de-regresiuxf3n}{%
+\subsection{Modelos de regresión}\label{modelos-de-regresiuxf3n}}
+
+Usaremos modelos de regresión OLS con errores estándar clusterizados por individuo y ponderaciones muestrales, replicando las estimaciones de la interacción entre \emph{appraisal} (nivel de discriminación percibida) y la dimensión experimental \emph{treatvscons} (desigualdad en el trato vs.~en el resultado). Analizaremos el efecto de esta interacción sobre las siete variables dependientes que capturan actitudes políticas hacia la discriminación:
+
+\begin{itemize}
+\tightlist
+\item
+  Percepción de la prevalencia de discriminación,
+\item
+  Resentimiento hacia quejas de grupos discriminados,
+\item
+  Apoyo a la cobertura mediática del tema,
+\item
+  Importancia percibida del problema,
+\item
+  Apoyo a leyes antidiscriminatorias,
+\item
+  Apoyo a acción afirmativa,
+\item
+  Apoyo a mayor gasto público en grupos discriminados.
+\end{itemize}
+
+\hypertarget{correcciuxf3n-por-comparaciones-muxfaltiples-muxe9todo-de-holm}{%
+\subsection{Corrección por comparaciones múltiples: método de Holm}\label{correcciuxf3n-por-comparaciones-muxfaltiples-muxe9todo-de-holm}}
+
+Aplicaremos una corrección de comparaciones múltiples con el método de Holm a las estimaciones marginales de la interacción \emph{appraisal * treatvscons}. Esto se justifica porque las siete pruebas sobre distintas variables dependientes podrían inflar la tasa de error tipo I si se evaluaran individualmente. La corrección de Holm permite mantener el control del error familiar sin ser tan conservadora como Bonferroni, y es apropiada dado que los outcomes están conceptualmente relacionados (todas miden distintas dimensiones de actitudes hacia la discriminación).
+
+\hypertarget{evaluaciuxf3n-de-sesgo-y-robustez}{%
+\subsection{Evaluación de sesgo y robustez}\label{evaluaciuxf3n-de-sesgo-y-robustez}}
+
+Con esta estrategia, podremos evaluar si los efectos de \emph{appraisal} sobre las actitudes políticas varían de forma significativa dependiendo del \emph{tipo de desigualdad} (trato vs.~resultado), y si algunos efectos reportados como significativos en el estudio original podrían deberse a inflación del error tipo I. Así, se busca fortalecer la validez inferencial de los resultados mediante una réplica robusta y críticamente fundamentada.
+
+\hypertarget{principales-resultados}{%
+\section{Principales resultados}\label{principales-resultados}}
+
+En la Tabla \ref{tab:table1} se muestran los resultados de la replicación de los efectos marginales de la interacción entre \emph{appraisal} y el factor experimental \emph{desigualdad trato vs.~desigualdad resultado} sobre las actitudes sociopolíticas, junto con la correción de Holm. Los hallazgos de la Tabla 6 del artículo original que hemos replicado coinciden con los resultados de la investigación original. Puntualmente, confirman la importancia de distinguir entre trato desigual y resultados desiguales como determinantes en las actitudes sociopolíticas de las personas frente a la discriminación. Al analizar los efectos marginales de cada uno, se observa un patrón consistente.
+
+Primero, los resultados muestran que el trato desigual tiene un efecto marginal negativo o neutro en la mayoría de los outcomes sociopolíticos. En otras palabras, el solo hecho de que un individuo o grupo reciba un trato diferente no siempre es interpretado como un problema social que merezca políticas públicas, reformas legales o intervenciones estatales. Este hallazgo coincide con una visión más formal de la justicia, que considera suficiente que todos sean tratados de la misma manera, sin importar si ese trato termina generando desigualdades reales.
+
+\begin{table}[!h]
+\centering\centering
+\caption{\label{tab:table1}\label{tab:table1} Replicación de efectos marginales de la interacción sobre actitudes sociopolíticas y correción de Holm}
+\centering
+\fontsize{11}{13}\selectfont
+\begin{tabu} to \linewidth {>{\raggedright\arraybackslash}p{4cm}>{\raggedright}X>{\raggedright}X>{\raggedright}X>{\raggedright}X>{\raggedright}X>{\raggedright}X}
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{3}{c}{Unequal Treatment} & \multicolumn{3}{c}{Unequal Outcomes} \\
+\cmidrule(l{3pt}r{3pt}){2-4} \cmidrule(l{3pt}r{3pt}){5-7}
+\textbf{Outcome} & \textbf{B} & \textbf{p value} & \textbf{Holm correction} & \textbf{B} & \textbf{p value} & \textbf{Holm correction}\\
+\midrule
+Prevalence of discrimination & -0.003 (0.001) & 0.000 & 0.000 & 0.004 (0.000) & 0.000 & 0.000\\
+Discrimination resentment & 0.004 (0.001) & 0.000 & 0.000 & 0.001 (0.001) & 0.170 & 0.334\\
+More media attention to discrimination & -0.003 (0.001) & 0.000 & 0.000 & 0.003 (0.000) & 0.000 & 0.000\\
+Issue salience of discrimination & -0.002 (0.001) & 0.000 & 0.000 & 0.005 (0.001) & 0.000 & 0.000\\
+Support for anti discrimination laws & -0.005 (0.001) & 0.000 & 0.000 & 0.001 (0.001) & 0.167 & 0.334\\
+\addlinespace
+Support for affirmative action & -0.004 (0.001) & 0.000 & 0.000 & 0.004 (0.001) & 0.000 & 0.000\\
+Support for increased federal funding & -0.004 (0.001) & 0.000 & 0.000 & 0.003 (0.000) & 0.000 & 0.000\\
+\bottomrule
+\multicolumn{7}{l}{\textsuperscript{} N = 6,359}\\
+\multicolumn{7}{l}{\textsuperscript{} B = efectos marginales. Errores estándares clusterizados entre paréntesis}\\
+\multicolumn{7}{l}{\textsuperscript{} Fuente: Elaboración propia en base a datos de Valentino y Warren (2025)}\\
+\end{tabu}
+\end{table}
+
+Segundo, la columna de resultados desiguales muestra efectos marginales positivos y estadísticamente significativos en prácticamente todos los outcomes analizados. Esto implica que cuando un acto, política o situación genera diferencias concretas en los resultados, las personas son mucho más proclives a considerarlo injusto y a respaldar medidas redistributivas o antidiscriminatorias para corregirlo. La magnitud y significancia de estos coeficientes refuerza la idea de que la definición de discriminación en la cultura estadounidense no se limita a la intención o el procedimiento, sino que está profundamente ligada a las consecuencias materiales que se producen.
+
+En síntesis, la comparación entre las columnas de trato desigual y resultados desiguales muestra que lo decisivo en las actitudes sociopolíticas no son las diferencias en el trato, sino las consecuencias concretas que ese trato produce. Cuando un acto o política genera desigualdades concretas, las personas tienden a considerarlo más injusto y por ello están más dispuestas a apoyar medidas para corregirlo. Así, estos resultados evidencian que la percepción de discriminación está fuertemente ligada a los efectos reales sobre los grupos afectados, más que al tipo de trato recibido.
+
+En cuanto a los resultados de las comparaciones múltiples con la corrección de Holm, la significancia estadística de los 14 test de hipótesis se mantuvo sin cambios. Esto se debe a que los valores \emph{p} obtenidos fueron tan pequeños que, incluso después de de aplicar la corrección, continuaron siendo altamente significativos. Este resultado refuerza la robustez de los hallazgos, ya que indica que los efectos observados no son producto de errores tipo I por comparaciones múltiples, sino que representan asociaciones consistentes y sólidas.
+
+\hypertarget{discusiuxf3n-y-conclusiones}{%
+\section{Discusión y conclusiones}\label{discusiuxf3n-y-conclusiones}}
+
+Una de las principales reflexiones que surge a partir de nuestra replicación tiene que ver con la estrategia de medición utilizada en la investigación. Si bien sus hallazgos son sólidos y conceptualmente valiosos, su aproximación metodológica consistió en promediar los ítems que componen cada outcome sociopolítico y luego usarlos como variables dependientes en modelos de regresión separados. Esta práctica, aunque es bastante común en ciencias sociales, asume implícitamente que todos los ítems miden el constructo con igual precisión y que el índice compuesto no tiene error de medición significativo, lo cual raramente se cumple en la realidad.
+
+Sin embargo, literatura metodológica reciente ofrece enfoques que podrían mejorar esta medición. Por ejemplo, la investigación realizada por Stoetzer, Zhou y Steenbergen (\protect\hyperlink{ref-stoetzer_causal_2025}{2025}) propone un modelo de inferencia causal con clases latentes (hIRT) que permite estimar simultáneamente la medición del outcome (considerando el peso y error de cada ítem) y el efecto causal del tratamiento experimental. Este enfoque corrige posibles sesgos en los coeficientes derivados de errores de medición y ofrece estimaciones más precisas y realistas, lo que evita el sesgo de atenuación (subestimación del efecto verdadero). Aplicado al caso de Valentino y Warren (\protect\hyperlink{ref-valentino_cultural_2025}{2025}), un modelo hIRT habría permitido estimar directamente cómo las variables experimentales afectaban los niveles reales de las actitudes sociopolíticas, teniendo en cuenta la heterogeneidad de los ítems (\protect\hyperlink{ref-stoetzer_causal_2025}{Stoetzer et al., 2025}). Es decir, reconociendo que algunas preguntas miden mejor ese concepto que otras y que no todas tienen el mismo peso. En lugar de simplemente promediar todas las preguntas como si fueran iguales, este modelo calcula un puntaje latente más preciso, ponderando las preguntas según su precisión y su exigencia. Del mismo modo, el uso de pruebas de DIF (funcionamiento diferencial del ítem) ayudaría a validar el supuesto de exclusión restringida, esto es, que el tratamiento no afecta directamente a los ítems, sino que solo lo hace a través del concepto latente (actitud sociopolítica en nuestro caso).
+
+Otro aspecto relevante de diseño es que el uso de viñetas, aunque útil para aislar mecanismos conceptuales, podría ser complementado o reemplazado por diseños de tipo conjoint experiment (\protect\hyperlink{ref-hainmueller_causal_2014}{Hainmueller et al., 2014}). Estos permiten estimar la importancia relativa de múltiples atributos simultáneamente, reflejando de manera más realista los juicios que las personas hacen de contextos complejos de la vida cotidiana. Por ejemplo, un conjoint podría haber presentado diferentes combinaciones de intencionalidad, poder y resultados desiguales en un mismo diseño experimental, permitiendo identificar con mayor precisión cuales de estos factores pesa más al juzgar un acto como discriminatorio. Además, los diseños conjoint ofrecen ventajas comparativas, como la posibilidad de detectar interacciones entre atributos, algo que las viñetas tradicionales capturan de forma más limitada (\protect\hyperlink{ref-hainmueller_causal_2014}{Hainmueller et al., 2014}; \protect\hyperlink{ref-leeper_measuring_2020}{Leeper et al., 2020}). Incorporar esa metodología habría fortalecido el estudio, al acercar el escenario experimental a decisiones y percepciones sociales más realistas y complejas.
+
+En conjunto, la aplicación de métodos como conjoint y modelos hIRT no solo fortalecería la validez de los hallazgos, sino que permitiría responder de forma más precisa a la pregunta central del estudio, la cual es entender que criterios usan las personas para definir la discriminación y cómo esas decisiones impactan sus actitudes sociopolíticas. Estas mejoras metodológicas representan un camino de mejora para futuras investigaciones que busquen avanzar desde la mera significancia estadística hacia una comprensión más robusta y matizada de los mecanismos culturales y sociales que estructuran la medición de la discriminación.
+
+En conclusión, esta replicación confirma la solidez de los hallazgos de Valentino y Warren (\protect\hyperlink{ref-valentino_cultural_2025}{2025}) sobre la importancia de los resultados desiguales frente al trato desigual como determinantes de las actitudes sociopolíticas hacia la discriminación. Sin embargo, también evidencia oportunidades metodológicas significativas. El uso de promedios para medir outcomes ignora la heterogeneidad y precisión diferencial de los ítems, algo que modelos como hIRT podrían abordar integrando la medición y estimación causal en un solo paso. Asimismo, complementar las viñetas con experimentos conjoint permitiría estimar con mayor realismo la importancia relativa de cada dimensión de discriminación en la percepción de los estadounidenses. En conjunto, estas mejoras no solo fortalecerían la validez de futuros estudios, sino que profundizarían nuestra comprensión de cómo las personas definen y evalúan la discriminación en sus múltiples formas, y como estas definiciones moldean su apoyo a políticas.
+
+\hypertarget{referencias}{%
+\section{Referencias}\label{referencias}}
+
+\hypertarget{refs}{}
+\begin{CSLReferences}{1}{0}
+\leavevmode\vadjust pre{\hypertarget{ref-auspurg_factorial_2015}{}}%
+Auspurg, K., \& Albanese, J. (2015). \emph{Factorial survey experiments}. Los Angeles: SAGE.
+
+\leavevmode\vadjust pre{\hypertarget{ref-hainmueller_causal_2014}{}}%
+Hainmueller, J., Hopkins, D. J., \& Yamamoto, T. (2014). Causal {Inference} in {Conjoint Analysis}: {Understanding Multidimensional Choices} via {Stated Preference Experiments}. \emph{Political Analysis}, \emph{22}(1), 1--30. \url{https://doi.org/10.1093/pan/mpt024}
+
+\leavevmode\vadjust pre{\hypertarget{ref-jasso_factorial_2006}{}}%
+Jasso, G. (2006). Factorial {Survey Methods} for {Studying Beliefs} and {Judgments}. \emph{Sociological Methods \& Research}, \emph{34}(3), 334--423. \url{https://doi.org/10.1177/0049124105283121}
+
+\leavevmode\vadjust pre{\hypertarget{ref-lamont_study_2002}{}}%
+Lamont, M., \& Molnár, V. (2002). The {Study} of {Boundaries} in the {Social Sciences}. \emph{Annual Review of Sociology}, \emph{28}(1), 167--195. \url{https://doi.org/10.1146/annurev.soc.28.110601.141107}
+
+\leavevmode\vadjust pre{\hypertarget{ref-leeper_measuring_2020}{}}%
+Leeper, T. J., Hobolt, S. B., \& Tilley, J. (2020). Measuring {Subgroup Preferences} in {Conjoint Experiments}. \emph{Political Analysis}, \emph{28}(2), 207--221. \url{https://doi.org/10.1017/pan.2019.30}
+
+\leavevmode\vadjust pre{\hypertarget{ref-stoetzer_causal_2025}{}}%
+Stoetzer, L. F., Zhou, X., \& Steenbergen, M. (2025). Causal inference with latent outcomes. \emph{American Journal of Political Science}, \emph{69}(2), 624--640. \url{https://doi.org/10.1111/ajps.12871}
+
+\leavevmode\vadjust pre{\hypertarget{ref-treischl_present_2022}{}}%
+Treischl, E., \& Wolbring, T. (2022). The {Past}, {Present} and {Future} of {Factorial Survey Experiments}: {A Review} for the {Social Sciences}. \emph{Methods, Data, Analyses}, \emph{16}, 30 Pages. \url{https://doi.org/10.12758/MDA.2021.07}
+
+\leavevmode\vadjust pre{\hypertarget{ref-valentino_cultural_2025}{}}%
+Valentino, L., \& Warren, E. (2025). Cultural {Heterogeneity} in {Americans}' {Definitions} of {Racism}, {Sexism}, and {Classism}: {Results} from a {Mixed-Methods Study}. \emph{American Journal of Sociology}, \emph{130}(4), 846--892. \url{https://doi.org/10.1086/733194}
+
+\end{CSLReferences}
+
+\pagebreak
+
+\hypertarget{cuxf3digo-de-r}{%
+\section{Código de R}\label{cuxf3digo-de-r}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{knitr}\SpecialCharTok{::}\NormalTok{opts\_chunk}\SpecialCharTok{$}\FunctionTok{set}\NormalTok{(}\AttributeTok{echo =}\NormalTok{ F,}
+                      \AttributeTok{warning =}\NormalTok{ F,}
+                      \AttributeTok{error =}\NormalTok{ F, }
+                      \AttributeTok{message =}\NormalTok{ F) }
+
+\CommentTok{\# 0. Install and load required packages}
+\FunctionTok{library}\NormalTok{(haven)}
+\FunctionTok{library}\NormalTok{(tidyverse)}
+\FunctionTok{library}\NormalTok{(broom)}
+\FunctionTok{library}\NormalTok{(margins)}
+\FunctionTok{library}\NormalTok{(survey)}
+\FunctionTok{library}\NormalTok{(emmeans)}
+\FunctionTok{library}\NormalTok{(here)}
+\FunctionTok{library}\NormalTok{(readr)}
+\FunctionTok{library}\NormalTok{(kableExtra)}
+\FunctionTok{library}\NormalTok{(psych)}
+
+\CommentTok{\# 1. Load the data (adjust path as needed)}
+\NormalTok{data }\OtherTok{\textless{}{-}} \FunctionTok{read\_dta}\NormalTok{(}\FunctionTok{here}\NormalTok{(}\StringTok{"experimentos/Data.dta"}\NormalTok{))}
+
+\NormalTok{data }\OtherTok{\textless{}{-}}\NormalTok{ data }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{polviews    =} \FunctionTok{factor}\NormalTok{(polviews,    }\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{), }\AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"Republican"}\NormalTok{,}\StringTok{"Independent"}\NormalTok{,}\StringTok{"Democrat"}\NormalTok{)),}
+    \AttributeTok{gender      =} \FunctionTok{factor}\NormalTok{(gender,      }\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{3}\NormalTok{), }\AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"Men"}\NormalTok{,}\StringTok{"Women"}\NormalTok{,}\StringTok{"Nonbinary"}\NormalTok{)),}
+    \AttributeTok{race4       =} \FunctionTok{factor}\NormalTok{(race4,       }\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{4}\NormalTok{), }\AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"White"}\NormalTok{,}\StringTok{"Black"}\NormalTok{,}\StringTok{"Hispanic"}\NormalTok{,}\StringTok{"Other"}\NormalTok{)),}
+    \AttributeTok{intentional =} \FunctionTok{factor}\NormalTok{(intentional, }\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{), }\AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"Unintentional"}\NormalTok{,}\StringTok{"Intentional"}\NormalTok{)),}
+    \AttributeTok{treatvscons =} \FunctionTok{factor}\NormalTok{(treatvscons, }\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{), }\AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"UnequalTreatment"}\NormalTok{,}\StringTok{"UnequalOutcomes"}\NormalTok{)),}
+    \AttributeTok{powerdiff   =} \FunctionTok{factor}\NormalTok{(powerdiff,   }\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{), }\AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"LessPowerful"}\NormalTok{,}\StringTok{"MorePowerful"}\NormalTok{))}
+\NormalTok{  )}
+
+\CommentTok{\# 2. Define survey design for clustering by PID and population weight}
+\NormalTok{svy\_design }\OtherTok{\textless{}{-}}\NormalTok{ survey}\SpecialCharTok{::}\FunctionTok{svydesign}\NormalTok{(}
+  \AttributeTok{ids     =} \SpecialCharTok{\textasciitilde{}}\NormalTok{PID,}
+  \AttributeTok{weights =} \SpecialCharTok{\textasciitilde{}}\NormalTok{weight,}
+  \AttributeTok{data    =}\NormalTok{ data}
+\NormalTok{)}
+
+\CommentTok{\# 3. Models: only unequal treatment vs unequal outcome}
+
+\NormalTok{model\_het\_tvc }\OtherTok{\textless{}{-}} \FunctionTok{svyglm}\NormalTok{(}
+\NormalTok{  appraisal }\SpecialCharTok{\textasciitilde{}}\NormalTok{ polviews}\SpecialCharTok{*}\NormalTok{treatvscons }\SpecialCharTok{+}\NormalTok{ gender}\SpecialCharTok{*}\NormalTok{treatvscons }\SpecialCharTok{+}\NormalTok{ race4}\SpecialCharTok{*}\NormalTok{treatvscons }\SpecialCharTok{+} 
+\NormalTok{    age}\SpecialCharTok{*}\NormalTok{treatvscons }\SpecialCharTok{+}\NormalTok{ educ}\SpecialCharTok{*}\NormalTok{treatvscons }\SpecialCharTok{+}\NormalTok{ lninc}\SpecialCharTok{*}\NormalTok{treatvscons }\SpecialCharTok{+}\NormalTok{ usborn, }\AttributeTok{design =}\NormalTok{ svy\_design)}
+
+\CommentTok{\# 4. Scales (alpha)}
+\NormalTok{data }\OtherTok{\textless{}{-}}\NormalTok{ data }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{discrimination =}\NormalTok{ psych}\SpecialCharTok{::}\FunctionTok{alpha}\NormalTok{(data[, }\FunctionTok{c}\NormalTok{(}\StringTok{"groupMinorities"}\NormalTok{, }\StringTok{"groupWomen"}\NormalTok{, }\StringTok{"groupPoor"}\NormalTok{)])}\SpecialCharTok{$}\NormalTok{scores,}
+    \AttributeTok{complain       =}\NormalTok{ psych}\SpecialCharTok{::}\FunctionTok{alpha}\NormalTok{(data[, }\FunctionTok{c}\NormalTok{(}\StringTok{"complainMinorities"}\NormalTok{, }\StringTok{"complainWomen"}\NormalTok{, }\StringTok{"complainPoor"}\NormalTok{)])}\SpecialCharTok{$}\NormalTok{scores,}
+    \AttributeTok{attention      =}\NormalTok{ psych}\SpecialCharTok{::}\FunctionTok{alpha}\NormalTok{(data[, }\FunctionTok{c}\NormalTok{(}\StringTok{"attentionMinorities"}\NormalTok{, }\StringTok{"attentionWomen"}\NormalTok{, }\StringTok{"attentionPoor"}\NormalTok{)])}\SpecialCharTok{$}\NormalTok{scores,}
+    \AttributeTok{mip            =}\NormalTok{ psych}\SpecialCharTok{::}\FunctionTok{alpha}\NormalTok{(data[, }\FunctionTok{c}\NormalTok{(}\StringTok{"mipMinorities"}\NormalTok{, }\StringTok{"mipWomen"}\NormalTok{, }\StringTok{"mipPoor"}\NormalTok{)])}\SpecialCharTok{$}\NormalTok{scores,}
+    \AttributeTok{law            =}\NormalTok{ psych}\SpecialCharTok{::}\FunctionTok{alpha}\NormalTok{(data[, }\FunctionTok{c}\NormalTok{(}\StringTok{"lawMinorities"}\NormalTok{, }\StringTok{"lawWomen"}\NormalTok{, }\StringTok{"lawPoor"}\NormalTok{)])}\SpecialCharTok{$}\NormalTok{scores,}
+    \AttributeTok{affirm         =}\NormalTok{ psych}\SpecialCharTok{::}\FunctionTok{alpha}\NormalTok{(data[, }\FunctionTok{c}\NormalTok{(}\StringTok{"affirmMinorities"}\NormalTok{, }\StringTok{"affirmWomen"}\NormalTok{, }\StringTok{"affirmPoor"}\NormalTok{)])}\SpecialCharTok{$}\NormalTok{scores,}
+    \AttributeTok{fund           =}\NormalTok{ psych}\SpecialCharTok{::}\FunctionTok{alpha}\NormalTok{(data[, }\FunctionTok{c}\NormalTok{(}\StringTok{"fundMinorities"}\NormalTok{, }\StringTok{"fundWomen"}\NormalTok{, }\StringTok{"fundPoor"}\NormalTok{)])}\SpecialCharTok{$}\NormalTok{scores}
+\NormalTok{  )}
+
+\NormalTok{svy\_design }\OtherTok{\textless{}{-}} \FunctionTok{update}\NormalTok{(svy\_design, }\AttributeTok{discrimination =}\NormalTok{ data}\SpecialCharTok{$}\NormalTok{discrimination,}
+                     \AttributeTok{complain =}\NormalTok{ data}\SpecialCharTok{$}\NormalTok{complain, }\AttributeTok{attention =}\NormalTok{ data}\SpecialCharTok{$}\NormalTok{attention,}
+                     \AttributeTok{mip =}\NormalTok{ data}\SpecialCharTok{$}\NormalTok{mip, }\AttributeTok{law =}\NormalTok{ data}\SpecialCharTok{$}\NormalTok{law, }\AttributeTok{affirm =}\NormalTok{ data}\SpecialCharTok{$}\NormalTok{affirm,}
+                     \AttributeTok{fund =}\NormalTok{ data}\SpecialCharTok{$}\NormalTok{fund)}
+
+\CommentTok{\# 5. Sociopolitical outcome models}
+\NormalTok{socio\_models }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(outcome) \{}
+  \FunctionTok{list}\NormalTok{(}
+    \FunctionTok{svyglm}\NormalTok{(}\FunctionTok{as.formula}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(outcome, }\StringTok{" \textasciitilde{} appraisal*intentional + polviews + gender + race4 + age + educ + lninc + usborn"}\NormalTok{)), }\AttributeTok{design =}\NormalTok{ svy\_design),}
+    \FunctionTok{svyglm}\NormalTok{(}\FunctionTok{as.formula}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(outcome, }\StringTok{" \textasciitilde{} appraisal*treatvscons + polviews + gender + race4 + age + educ + lninc + usborn"}\NormalTok{)), }\AttributeTok{design =}\NormalTok{ svy\_design),}
+    \FunctionTok{svyglm}\NormalTok{(}\FunctionTok{as.formula}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(outcome, }\StringTok{" \textasciitilde{} appraisal*powerdiff + polviews + gender + race4 + age + educ + lninc + usborn"}\NormalTok{)), }\AttributeTok{design =}\NormalTok{ svy\_design)}
+\NormalTok{  )}
+\NormalTok{\}}
+
+\NormalTok{outcomes }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"discrimination"}\NormalTok{, }\StringTok{"complain"}\NormalTok{, }\StringTok{"attention"}\NormalTok{, }\StringTok{"mip"}\NormalTok{, }\StringTok{"law"}\NormalTok{, }\StringTok{"affirm"}\NormalTok{, }\StringTok{"fund"}\NormalTok{)}
+\NormalTok{models\_list }\OtherTok{\textless{}{-}} \FunctionTok{lapply}\NormalTok{(outcomes, socio\_models)}
+\FunctionTok{names}\NormalTok{(models\_list) }\OtherTok{\textless{}{-}}\NormalTok{ outcomes}
+
+\CommentTok{\# 6. Extract marginal effects of appraisal by treatvscons for each outcome}
+\NormalTok{extract\_treatvscons\_margins }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(model) \{}
+\NormalTok{  emm }\OtherTok{\textless{}{-}} \FunctionTok{emtrends}\NormalTok{(model, }\AttributeTok{var =} \StringTok{"appraisal"}\NormalTok{, }\AttributeTok{specs =} \SpecialCharTok{\textasciitilde{}}\NormalTok{ treatvscons)}
+\NormalTok{  out }\OtherTok{\textless{}{-}}\NormalTok{ broom}\SpecialCharTok{::}\FunctionTok{tidy}\NormalTok{(emm)}
+\NormalTok{  out}
+\NormalTok{\}}
+
+\NormalTok{tvc\_margins }\OtherTok{\textless{}{-}} \FunctionTok{lapply}\NormalTok{(models\_list, }\ControlFlowTok{function}\NormalTok{(m) }\FunctionTok{extract\_treatvscons\_margins}\NormalTok{(m[[}\DecValTok{2}\NormalTok{]]))}
+\FunctionTok{names}\NormalTok{(tvc\_margins) }\OtherTok{\textless{}{-}} \FunctionTok{names}\NormalTok{(models\_list)}
+
+\CommentTok{\# 7. Export}
+
+\CommentTok{\# write.csv(tvc\_margins, file = here("experimentos/resultados\_valentino\_STATA.csv"))}
+
+\CommentTok{\# 8. Holm}
+
+\NormalTok{results\_tbl }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(}\FunctionTok{here}\NormalTok{(}\StringTok{"experimentos/resultados\_valentino\_STATA.csv"}\NormalTok{))}
+
+\NormalTok{results\_tbl }\OtherTok{\textless{}{-}}\NormalTok{ results\_tbl }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{p\_holm =} \FunctionTok{p.adjust}\NormalTok{(p\_value, }\AttributeTok{method =} \StringTok{"holm"}\NormalTok{))}
+
+
+\NormalTok{results\_tbl }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate\_at}\NormalTok{(}\AttributeTok{.vars =} \FunctionTok{c}\NormalTok{(}\DecValTok{3}\NormalTok{,}\DecValTok{4}\NormalTok{,}\DecValTok{6}\NormalTok{,}\DecValTok{7}\NormalTok{), }\AttributeTok{.funs =} \SpecialCharTok{\textasciitilde{}} \FunctionTok{round}\NormalTok{(.,}\DecValTok{3}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate\_at}\NormalTok{(}\AttributeTok{.vars =} \FunctionTok{c}\NormalTok{(}\DecValTok{5}\NormalTok{,}\DecValTok{8}\NormalTok{), }\AttributeTok{.funs =} \SpecialCharTok{\textasciitilde{}} \FunctionTok{format}\NormalTok{(., }\AttributeTok{nsmall=}\DecValTok{3}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate\_all}\NormalTok{(}\SpecialCharTok{\textasciitilde{}} \FunctionTok{as.character}\NormalTok{(.)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{std\_err =} \FunctionTok{if\_else}\NormalTok{(std\_err }\SpecialCharTok{==} \StringTok{"0"}\NormalTok{, }\StringTok{"0.000"}\NormalTok{, std\_err)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{dy\_dx =} \FunctionTok{paste0}\NormalTok{(dy\_dx, }\StringTok{" ("}\NormalTok{, std\_err, }\StringTok{")"}\NormalTok{),}
+         \AttributeTok{ci =} \FunctionTok{paste0}\NormalTok{(}\StringTok{"["}\NormalTok{, ci\_lower,}\StringTok{","}\NormalTok{, ci\_upper, }\StringTok{"]"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{pivot\_wider}\NormalTok{(}\AttributeTok{id\_cols =} \DecValTok{1}\NormalTok{,}
+              \AttributeTok{names\_from =} \StringTok{"treatvscons"}\NormalTok{,}
+              \AttributeTok{values\_from =} \FunctionTok{c}\NormalTok{(dy\_dx, p\_value,}
+\NormalTok{                              p\_holm)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{outcome =} \FunctionTok{case\_when}\NormalTok{(}
+\NormalTok{    outcome }\SpecialCharTok{==} \StringTok{"discrimination"} \SpecialCharTok{\textasciitilde{}} \StringTok{"Prevalence of discrimination"}\NormalTok{,}
+\NormalTok{    outcome }\SpecialCharTok{==} \StringTok{"complain"} \SpecialCharTok{\textasciitilde{}} \StringTok{"Discrimination resentment"}\NormalTok{,}
+\NormalTok{    outcome }\SpecialCharTok{==} \StringTok{"attention"} \SpecialCharTok{\textasciitilde{}} \StringTok{"More media attention to discrimination"}\NormalTok{,}
+\NormalTok{    outcome }\SpecialCharTok{==} \StringTok{"mip"} \SpecialCharTok{\textasciitilde{}} \StringTok{"Issue salience of discrimination"}\NormalTok{,}
+\NormalTok{    outcome }\SpecialCharTok{==} \StringTok{"law"} \SpecialCharTok{\textasciitilde{}} \StringTok{"Support for anti discrimination laws"}\NormalTok{,}
+\NormalTok{    outcome }\SpecialCharTok{==} \StringTok{"affirm"} \SpecialCharTok{\textasciitilde{}} \StringTok{"Support for affirmative action"}\NormalTok{,}
+\NormalTok{    outcome }\SpecialCharTok{==} \StringTok{"fund"} \SpecialCharTok{\textasciitilde{}} \StringTok{"Support for increased federal funding"}
+\NormalTok{  )) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{select}\NormalTok{(outcome, }\FunctionTok{ends\_with}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"Treatment"}\NormalTok{, }\StringTok{"Outcomes"}\NormalTok{))) }\SpecialCharTok{\%\textgreater{}\%} 
+\NormalTok{  kableExtra}\SpecialCharTok{::}\FunctionTok{kable}\NormalTok{(}\AttributeTok{format =} \StringTok{"latex"}\NormalTok{, }
+                    \AttributeTok{col.names =} \FunctionTok{c}\NormalTok{(}\StringTok{"Outcome"}\NormalTok{, }\StringTok{"B"}\NormalTok{, }\StringTok{"p value"}\NormalTok{, }\StringTok{"Holm correction"}\NormalTok{, }\StringTok{"B"}\NormalTok{, }\StringTok{"p value"}\NormalTok{, }\StringTok{"Holm correction"}\NormalTok{),}
+                    \AttributeTok{row.names =}\NormalTok{ F,}
+                    \AttributeTok{booktabs =}\NormalTok{ T, }\AttributeTok{align =} \StringTok{\textquotesingle{}l\textquotesingle{}}\NormalTok{,}
+                    \AttributeTok{caption =} \FunctionTok{paste}\NormalTok{(}\StringTok{"(}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{\#tab:table1)"}\NormalTok{,}\StringTok{"Replicación de efectos marginales de la interacción sobre actitudes sociopolíticas y correción de Holm"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} 
+\NormalTok{  kableExtra}\SpecialCharTok{::}\FunctionTok{add\_header\_above}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{" "} \OtherTok{=} \DecValTok{1}\NormalTok{, }\StringTok{"Unequal Treatment"} \OtherTok{=}\DecValTok{3}\NormalTok{, }\StringTok{"Unequal Outcomes"} \OtherTok{=} \DecValTok{3}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} 
+\NormalTok{  kableExtra}\SpecialCharTok{::}\FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{latex\_options =} \StringTok{"hold\_position"}\NormalTok{, }
+                            \AttributeTok{position =} \StringTok{"center"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{  kableExtra}\SpecialCharTok{::}\FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{bootstrap\_options =} \FunctionTok{c}\NormalTok{(}\StringTok{"striped"}\NormalTok{, }\StringTok{"hover"}\NormalTok{, }\StringTok{"condensed"}\NormalTok{, }\StringTok{"responsive"}\NormalTok{), }\AttributeTok{full\_width =}\NormalTok{ T, }\AttributeTok{font\_size =} \DecValTok{11}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+\NormalTok{  kableExtra}\SpecialCharTok{::}\FunctionTok{column\_spec}\NormalTok{(}\DecValTok{1}\NormalTok{, }\AttributeTok{width =} \StringTok{"4cm"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+\NormalTok{  kableExtra}\SpecialCharTok{::}\FunctionTok{row\_spec}\NormalTok{(}\DecValTok{0}\NormalTok{, }\AttributeTok{bold =}\NormalTok{ T) }\SpecialCharTok{\%\textgreater{}\%} 
+\NormalTok{  kableExtra}\SpecialCharTok{::}\FunctionTok{add\_footnote}\NormalTok{(}\AttributeTok{label =} \FunctionTok{c}\NormalTok{(}\StringTok{"N = 6,359"}\NormalTok{, }\StringTok{"B = efectos marginales. Errores estándares clusterizados entre paréntesis"}\NormalTok{, }\StringTok{"Fuente: Elaboración propia en base a datos de Valentino y Warren (2025)"}\NormalTok{), }\AttributeTok{notation =} \StringTok{"none"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+
+\end{document}

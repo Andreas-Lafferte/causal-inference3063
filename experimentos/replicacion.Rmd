@@ -1,0 +1,316 @@
+---
+title: |
+ | \vspace{2cm} Replicación: Cultural Heterogeneity in Americans’ Definitions of Racism, Sexism, and Classism: Results from a Mixed-Methods Study 
+subtitle: |
+ | Lauren Valentino & Evangeline Warren (2025) 
+ | \vspace{2cm} Diseño y análisis de experimentos aleatorizados en cs. - FCS3001
+author: |
+ |  Estudiantes: Ignacia Devia, Sebastián Budenivch y Andreas Laffert
+ |  Profesor Luis Maldonado
+ | \vspace{7cm}
+date: "`r Sys.setlocale('LC_TIME', 'es_ES.UTF-8'); format(Sys.Date(), '%A %d, %B %Y')`"
+output:
+  bookdown::pdf_document2:
+    template: null
+    toc: false
+    keep_tex: true
+    number_sections: false
+bibliography: ../input/bib/magister.bib     
+csl: ../input/bib/apa6.csl    
+linkcolor: gray
+urlcolor: blue
+linestretch: '1.15'
+link-citations: yes
+fontsize: 13pt
+papersize: a4
+geometry: "left=2.54cm,right=2.54cm,top=2.54cm,bottom=2.54cm" 
+lang: en-US
+header-includes:
+  - \usepackage{titling}
+  - \pretitle{\begin{center}\LARGE\includegraphics[width=7cm]{../img/logo_isuc.png}\\[\bigskipamount]}
+  - \posttitle{\end{center}}
+  - \usepackage{times}           # Times New Roman
+  - \usepackage{caption}
+  - \usepackage{floatrow} 
+  - \usepackage{float}
+  - \floatsetup[figure]{capposition=top}
+  - \floatsetup[table]{capposition=top}
+  - \floatplacement{figure}{H}
+  - \floatplacement{table}{h}
+  - \usepackage{graphicx}
+  - \usepackage{booktabs}
+  - \usepackage{longtable}
+  - \usepackage{array}
+  - \usepackage{multirow}
+  - \usepackage{wrapfig}
+  - \usepackage{colortbl}
+  - \usepackage{pdflscape}
+  - \usepackage{tabu}
+  - \usepackage{fancyhdr}
+  - \fancyhead{} 
+  - \usepackage{threeparttable}
+---
+
+\pagebreak
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = F,
+                      warning = F,
+                      error = F, 
+                      message = F) 
+```
+
+
+```{r, echo=FALSE}
+
+# 0. Install and load required packages
+library(haven)
+library(tidyverse)
+library(broom)
+library(margins)
+library(survey)
+library(emmeans)
+library(here)
+library(readr)
+library(kableExtra)
+library(psych)
+
+# 1. Load the data (adjust path as needed)
+data <- read_dta(here("experimentos/Data.dta"))
+
+data <- data %>%
+  mutate(
+    polviews    = factor(polviews,    levels = c(0,1,2), labels = c("Republican","Independent","Democrat")),
+    gender      = factor(gender,      levels = c(1,2,3), labels = c("Men","Women","Nonbinary")),
+    race4       = factor(race4,       levels = c(1,2,3,4), labels = c("White","Black","Hispanic","Other")),
+    intentional = factor(intentional, levels = c(0,1), labels = c("Unintentional","Intentional")),
+    treatvscons = factor(treatvscons, levels = c(0,1), labels = c("UnequalTreatment","UnequalOutcomes")),
+    powerdiff   = factor(powerdiff,   levels = c(0,1), labels = c("LessPowerful","MorePowerful"))
+  )
+
+# 2. Define survey design for clustering by PID and population weight
+svy_design <- survey::svydesign(
+  ids     = ~PID,
+  weights = ~weight,
+  data    = data
+)
+
+# 3. Models: only unequal treatment vs unequal outcome
+
+model_het_tvc <- svyglm(
+  appraisal ~ polviews*treatvscons + gender*treatvscons + race4*treatvscons + 
+    age*treatvscons + educ*treatvscons + lninc*treatvscons + usborn, design = svy_design)
+
+# 4. Scales (alpha)
+data <- data %>% 
+  mutate(
+    discrimination = psych::alpha(data[, c("groupMinorities", "groupWomen", "groupPoor")])$scores,
+    complain       = psych::alpha(data[, c("complainMinorities", "complainWomen", "complainPoor")])$scores,
+    attention      = psych::alpha(data[, c("attentionMinorities", "attentionWomen", "attentionPoor")])$scores,
+    mip            = psych::alpha(data[, c("mipMinorities", "mipWomen", "mipPoor")])$scores,
+    law            = psych::alpha(data[, c("lawMinorities", "lawWomen", "lawPoor")])$scores,
+    affirm         = psych::alpha(data[, c("affirmMinorities", "affirmWomen", "affirmPoor")])$scores,
+    fund           = psych::alpha(data[, c("fundMinorities", "fundWomen", "fundPoor")])$scores
+  )
+
+svy_design <- update(svy_design, discrimination = data$discrimination,
+                     complain = data$complain, attention = data$attention,
+                     mip = data$mip, law = data$law, affirm = data$affirm,
+                     fund = data$fund)
+
+# 5. Sociopolitical outcome models
+socio_models <- function(outcome) {
+  list(
+    svyglm(as.formula(paste0(outcome, " ~ appraisal*intentional + polviews + gender + race4 + age + educ + lninc + usborn")), design = svy_design),
+    svyglm(as.formula(paste0(outcome, " ~ appraisal*treatvscons + polviews + gender + race4 + age + educ + lninc + usborn")), design = svy_design),
+    svyglm(as.formula(paste0(outcome, " ~ appraisal*powerdiff + polviews + gender + race4 + age + educ + lninc + usborn")), design = svy_design)
+  )
+}
+
+outcomes <- c("discrimination", "complain", "attention", "mip", "law", "affirm", "fund")
+models_list <- lapply(outcomes, socio_models)
+names(models_list) <- outcomes
+
+# 6. Extract marginal effects of appraisal by treatvscons for each outcome
+extract_treatvscons_margins <- function(model) {
+  emm <- emtrends(model, var = "appraisal", specs = ~ treatvscons)
+  out <- broom::tidy(emm)
+  out
+}
+
+tvc_margins <- lapply(models_list, function(m) extract_treatvscons_margins(m[[2]]))
+names(tvc_margins) <- names(models_list)
+
+# 7. Export
+
+# write.csv(tvc_margins, file = here("experimentos/resultados_valentino_STATA.csv"))
+
+# 8. Holm
+
+results_tbl <- read_csv(here("experimentos/resultados_valentino_STATA.csv"))
+
+results_tbl <- results_tbl %>%
+  mutate(p_holm = p.adjust(p_value, method = "holm"))
+
+```
+
+
+# Tema y pregunta de investigación 
+
+El estudio de Valentino y Warren [-@valentino_cultural_2025] busca examinar cómo los estadounidenses atribuyen significados a los conceptos de racismo, clasismo y sexismo, debido a que la medición de estos tres fenómenos ha sido de debate teórico y metodológico antes que centrado en las percepciones concretas de los individuos. Para ello, deciden alejarse de los conceptos académicos y centrarse en cómo los ciudadanos estadounidense comunes significan estos tres fenómenos. En consecuencia, el artículo busca responder dos preguntas principales: 1) ¿Cómo definen los estadounidenses los conceptos de racismo, sexismo y clasismo, y de qué manera varían estas definiciones según características sociodemográficas?, y 2) ¿Qué relación existe entre estas definiciones y sus actitudes sociopolíticas y preferencias por políticas públicas? 
+
+# Motivación y justificación del estudio 
+
+El texto plantea que en la discusión más general sobre discriminación se señala la importancia y escasa investigación empírica que dé cuenta de los procesos de evaluación perceptual que utilizan las personas de Estados Unidos para juzgar y categorizar algo como clasismo/racismo/sexismo o no [@valentino_cultural_2025]. Los autores, a este respecto, afirman que hay una brecha y distancia entre cómo los académicos definen y miden estos conceptos –ya sea en base a experiencia autopercibida o situaciones más implícitas- y cómo la gente entiende y percibe estos fenómenos. Esto produce problemas en la validez de las mediciones de las encuestas al asumir que las personas tienen igual o similares perspectivas de los significados de cada uno de estos fenómenos. Por lo mismo, emplean un enfoque cultural y cognitivo para observar la heterogeneidad cultural y polisemia del clasismo, sexismo y racismo, y cómo estas formas de definir dependen de sus características sociodemográficas (ideología, género, edad, ingresos, raza). Además, estas teorías populares de definición de los tres fenómenos moldean las opiniones sociopolíticas de los estadounidenses tales como las actitudes intergrupales, preferencias de redistribución, apoyo a leyes y políticas antidiscriminatorias [@valentino_cultural_2025]. 
+
+# Hipótesis por replicar 
+
+La hipótesis por replicar se relaciona con que las definiciones personales de estos conceptos (racismo, sexismo y clasismo) predicen/afectan actitudes sociopolíticas y apoyo a políticas públicas antidiscriminatorias, incluso controlando por características demográficas y opiniones políticas generales. 
+
+# Diseño del estudio original de Valentino y Warren (2025) 
+
+Valentino y Warren [-@valentino_cultural_2025] emplean un enfoque de métodos mixtos secuenciales para explorar cómo las personas comunes en Estados Unidos comprenden el racismo, el sexismo y el clasismo, y cómo estas definiciones perceptuales varían según atributos sociodemográficos y predicen actitudes sociopolíticas. El diseño combina una fase cualitativa inductiva y una fase cuantitativa deductiva, integrando herramientas propias de la sociología cultural y de la investigación experimental. 
+
+## Fase cualitativa: entrevistas y fronteras simbólicas 
+
+En la fase cualitativa, los autores realizaron 40 entrevistas semiestructuradas a residentes de una ciudad del Medio Oeste y sus alrededores, reclutados mediante redes sociales como Facebook y MeetUp. De un total de 1,378 personas interesadas, se aplicó muestreo por cuotas para garantizar diversidad en raza, género, nivel educativo, edad y orientación política. Las entrevistas se condujeron de forma remota por restricciones sanitarias derivadas de la pandemia, con una duración media de una hora, y fueron posteriormente transcritas, anonimizadas y codificadas en Dedoose. 
+
+El enfoque metodológico se inspiró en el concepto de fronteras simbólicas de Lamont y Molnár [-@lamont_study_2002]: en lugar de solicitar definiciones abstractas, los entrevistadores pidieron a los participantes que identificaran ejemplos de situaciones que sí y que no consideraban como discriminación. Esta técnica permite observar cómo las personas trazan límites conceptuales en tiempo real, sin requerir que los justifiquen verbalmente. Así, se estudian las distinciones implícitas que las personas hacen para categorizar experiencias como racistas, sexistas o clasistas, revelando los criterios normativos que operan en su razonamiento cotidiano. Este procedimiento cualitativo se inserta en el marco de un enfoque cultural de la desigualdad, que busca comprender cómo los mecanismos micro-subjetivos de categorización intervienen en la (re)producción de desigualdades sociales más amplias [@lamont_study_2002]. En línea con este enfoque, los hallazgos revelaron tres dimensiones fundamentales que estructuran las percepciones de discriminación: 
+
+- Intencionalidad del acto (deliberado vs. accidental), 
+- Tipo de desigualdad (trato desigual vs. resultados desiguales), 
+- Diferencias de poder entre los grupos implicados. 
+
+Estas categorías inductivas sirvieron como base para construir el diseño experimental de la fase cuantitativa. 
+
+## Fase cuantitativa: experimento factorial con viñetas 
+
+A partir de los patrones detectados en las entrevistas, los autores [-@valentino_cultural_2025] diseñaron un experimento factorial implementado mediante encuesta nacional con 2,000 participantes representativos, reclutados a través de YouGov. Cada persona evaluó nueve viñetas de escenarios potenciales: tres sobre racismo, tres sobre sexismo y tres sobre clasismo, todas derivadas de ejemplos reales mencionados en la fase cualitativa. Estas viñetas presentan versiones diferentes que manipulan sistemáticamente una de las tres dimensiones clave (intencionalidad, tipo de desigualdad o poder del grupo afectado): 
+
+- Intencionalidad del acto  
+- No intencionalidad del acto  
+- Trato desigual con resultado igualitario  
+- Trato igualitario con resultado desigual  
+- Grupo poderoso vs. no poderoso afectado 
+
+En total, el diseño factorial fraccionado produjo 45 combinaciones posibles (9 temas × 5 versiones). A cada encuestado se le asignó aleatoriamente una versión por tema, y según los autores se buscó asegurar un balance entre las condiciones para que fueran respondidas por un número suficiente de encuestados [@valentino_cultural_2025, p.860]. Las viñetas fueron validadas en un estudio piloto, donde más del 80 % de los participantes las consideraron realistas y comprensibles. 
+
+La variable dependiente principal fue la calificación del grado de discriminación percibida en cada viñeta (appraisal), medida en una escala de 0 a 100. También recolectaron información sociodemográfica básica de los participantes. Posteriormente al experimento, se recolectaron datos sobre actitudes políticas estandarizadas (como apoyo a políticas antidiscriminatorias), permitiendo vincular los juicios perceptivos con orientaciones normativas. 
+
+### El diseño como encuesta factorial 
+
+El estudio de Valentino y Warren [-@valentino_cultural_2025] puede alinearse con el enfoque clásico de encuestas factoriales desarrollado por investigaciones empíricas sobre justicia distributiva [@jasso_factorial_2006], que distinguen tres tipos de ecuaciones: (1) creencias positivas sobre el mundo (“qué es”), (2) juicios normativos (“qué debería ser”) y (3) las consecuencias conductuales de esos juicios. En este marco, los autores estiman ecuaciones del segundo y tercer tipo, donde la calificación de discriminación representa un juicio moral normativo que depende de los atributos manipulados, y luego se espera que tales definiciones afecten actitudes sociopolíticas. 
+
+El uso de viñetas basadas en experiencias reales y su manipulación sistemática buscan estudiar cómo las personas llegan a sus juicios a partir de combinaciones complejas de atributos sociales. El modelo factorial permite estimar tanto efectos promedio ($ATEs$) como efectos condicionales ($CATEs$) al interactuar las dimensiones manipuladas con características del encuestado. Además, el diseño de Valentino y Warren [-@valentino_cultural_2025] ilustra virtudes clave de los experimentos factoriales, como su capacidad para aislar mecanismos causales complejos y su validez externa reforzada por la naturalidad contextual de las viñetas [@auspurg_factorial_2015; @treischl_present_2022]. 
+
+## Estimands y estimandos 
+
+Los estimands centrales del estudio son: 
+
+- Los efectos causales promedio ($ATEs$) de cada atributo manipulado sobre la calificación de discriminación, 
+- Efectos condicionales ($CATEs$) por subgrupos sociodemográficos, 
+- La interacción entre el appraisal y las condiciones experimentales (e.g., treatvscons) como predictores de actitudes políticas. 
+
+Los estimandos se obtienen mediante regresiones lineales OLS con errores clusterizados por individuo y ponderaciones muestrales, estimando también efectos marginales con el comando _margins_ de STATA. 
+
+# Estrategia de análisis para la replicación 
+
+Para esta replicación, emplearemos los mismos modelos y métodos utilizados por Valentino y Warren [-@valentino_cultural_2025], con algunos ajustes que me permitirán evaluar la robustez de sus resultados y explorar posibles sesgos por múltiples comparaciones en el efecto de la interacción entre appraisal y los factores experimentales (desigualdad en el trato vs. en el resultado) sobre actitudes sociopolíticas (Tabla 6 del artículo). 
+
+## Modelos de regresión 
+
+Usaremos modelos de regresión OLS con errores estándar clusterizados por individuo y ponderaciones muestrales, replicando las estimaciones de la interacción entre _appraisal_ (nivel de discriminación percibida) y la dimensión experimental _treatvscons_ (desigualdad en el trato vs. en el resultado). Analizaremos el efecto de esta interacción sobre las siete variables dependientes que capturan actitudes políticas hacia la discriminación: 
+
+- Percepción de la prevalencia de discriminación, 
+- Resentimiento hacia quejas de grupos discriminados, 
+- Apoyo a la cobertura mediática del tema, 
+- Importancia percibida del problema, 
+- Apoyo a leyes antidiscriminatorias, 
+- Apoyo a acción afirmativa, 
+- Apoyo a mayor gasto público en grupos discriminados. 
+
+## Corrección por comparaciones múltiples: método de Holm 
+
+Aplicaremos una corrección de comparaciones múltiples con el método de Holm a las estimaciones marginales de la interacción _appraisal * treatvscons_. Esto se justifica porque las siete pruebas sobre distintas variables dependientes podrían inflar la tasa de error tipo I si se evaluaran individualmente. La corrección de Holm permite mantener el control del error familiar sin ser tan conservadora como Bonferroni, y es apropiada dado que los outcomes están conceptualmente relacionados (todas miden distintas dimensiones de actitudes hacia la discriminación). 
+
+## Evaluación de sesgo y robustez 
+
+Con esta estrategia, podremos evaluar si los efectos de _appraisal_ sobre las actitudes políticas varían de forma significativa dependiendo del _tipo de desigualdad_ (trato vs. resultado), y si algunos efectos reportados como significativos en el estudio original podrían deberse a inflación del error tipo I. Así, se busca fortalecer la validez inferencial de los resultados mediante una réplica robusta y críticamente fundamentada. 
+
+# Principales resultados 
+
+En la Tabla \@ref(tab:table1) se muestran los resultados de la replicación de los efectos marginales de la interacción entre _appraisal_ y el factor experimental _desigualdad trato vs. desigualdad resultado_ sobre las actitudes sociopolíticas, junto con la correción de Holm. Los hallazgos de la Tabla 6 del artículo original que hemos replicado coinciden con los resultados de la investigación original. Puntualmente, confirman la importancia de distinguir entre trato desigual y resultados desiguales como determinantes en las actitudes sociopolíticas de las personas frente a la discriminación. Al analizar los efectos marginales de cada uno, se observa un patrón consistente. 
+
+Primero, los resultados muestran que el trato desigual tiene un efecto marginal negativo o neutro en la mayoría de los outcomes sociopolíticos. En otras palabras, el solo hecho de que un individuo o grupo reciba un trato diferente no siempre es interpretado como un problema social que merezca políticas públicas, reformas legales o intervenciones estatales. Este hallazgo coincide con una visión más formal de la justicia, que considera suficiente que todos sean tratados de la misma manera, sin importar si ese trato termina generando desigualdades reales. 
+
+```{r table1, results='asis'}
+
+results_tbl %>% 
+  mutate_at(.vars = c(3,4,6,7), .funs = ~ round(.,3)) %>% 
+  mutate_at(.vars = c(5,8), .funs = ~ format(., nsmall=3)) %>% 
+  mutate_all(~ as.character(.)) %>% 
+  mutate(std_err = if_else(std_err == "0", "0.000", std_err)) %>% 
+  mutate(dy_dx = paste0(dy_dx, " (", std_err, ")"),
+         ci = paste0("[", ci_lower,",", ci_upper, "]")) %>% 
+  pivot_wider(id_cols = 1,
+              names_from = "treatvscons",
+              values_from = c(dy_dx, p_value,
+                              p_holm)) %>% 
+  mutate(outcome = case_when(
+    outcome == "discrimination" ~ "Prevalence of discrimination",
+    outcome == "complain" ~ "Discrimination resentment",
+    outcome == "attention" ~ "More media attention to discrimination",
+    outcome == "mip" ~ "Issue salience of discrimination",
+    outcome == "law" ~ "Support for anti discrimination laws",
+    outcome == "affirm" ~ "Support for affirmative action",
+    outcome == "fund" ~ "Support for increased federal funding"
+  )) %>% 
+  select(outcome, ends_with(c("Treatment", "Outcomes"))) %>% 
+  kableExtra::kable(format = "latex", 
+                    col.names = c("Outcome", "B", "p value", "Holm correction", "B", "p value", "Holm correction"),
+                    row.names = F,
+                    booktabs = T, align = 'l',
+                    caption = paste("(\\#tab:table1)","Replicación de efectos marginales de la interacción sobre actitudes sociopolíticas y correción de Holm")) %>% 
+  kableExtra::add_header_above(c(" " = 1, "Unequal Treatment" =3, "Unequal Outcomes" = 3)) %>% 
+  kableExtra::kable_styling(latex_options = "hold_position", 
+                            position = "center") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), full_width = T, font_size = 11) %>% 
+  kableExtra::column_spec(1, width = "4cm") %>%
+  kableExtra::row_spec(0, bold = T) %>% 
+  kableExtra::add_footnote(label = c("N = 6,359", "B = efectos marginales. Errores estándares clusterizados entre paréntesis", "Fuente: Elaboración propia en base a datos de Valentino y Warren (2025)"), notation = "none")
+
+
+```
+
+
+Segundo, la columna de resultados desiguales muestra efectos marginales positivos y estadísticamente significativos en prácticamente todos los outcomes analizados. Esto implica que cuando un acto, política o situación genera diferencias concretas en los resultados, las personas son mucho más proclives a considerarlo injusto y a respaldar medidas redistributivas o antidiscriminatorias para corregirlo. La magnitud y significancia de estos coeficientes refuerza la idea de que la definición de discriminación en la cultura estadounidense no se limita a la intención o el procedimiento, sino que está profundamente ligada a las consecuencias materiales que se producen.  
+
+En síntesis, la comparación entre las columnas de trato desigual y resultados desiguales muestra que lo decisivo en las actitudes sociopolíticas no son las diferencias en el trato, sino las consecuencias concretas que ese trato produce. Cuando un acto o política genera desigualdades concretas, las personas tienden a considerarlo más injusto y por ello están más dispuestas a apoyar medidas para corregirlo. Así, estos resultados evidencian que la percepción de discriminación está fuertemente ligada a los efectos reales sobre los grupos afectados, más que al tipo de trato recibido.  
+
+En cuanto a los resultados de las comparaciones múltiples con la corrección de Holm, la significancia estadística de los 14 test de hipótesis se mantuvo sin cambios. Esto se debe a que los valores _p_ obtenidos fueron tan pequeños que, incluso después de de aplicar la corrección, continuaron siendo altamente significativos. Este resultado refuerza la robustez de los hallazgos, ya que indica que los efectos observados no son producto de errores tipo I por comparaciones múltiples, sino que representan asociaciones consistentes y sólidas.  
+
+# Discusión y conclusiones 
+
+Una de las principales reflexiones que surge a partir de nuestra replicación tiene que ver con la estrategia de medición utilizada en la investigación. Si bien sus hallazgos son sólidos y conceptualmente valiosos, su aproximación metodológica consistió en promediar los ítems que componen cada outcome sociopolítico y luego usarlos como variables dependientes en modelos de regresión separados. Esta práctica, aunque es bastante común en ciencias sociales, asume implícitamente que todos los ítems miden el constructo con igual precisión y que el índice compuesto no tiene error de medición significativo, lo cual raramente se cumple en la realidad.  
+
+Sin embargo, literatura metodológica reciente ofrece enfoques que podrían mejorar esta medición. Por ejemplo, la investigación realizada por Stoetzer, Zhou y Steenbergen [-@stoetzer_causal_2025] propone un modelo de inferencia causal con clases latentes (hIRT) que permite estimar simultáneamente la medición del outcome (considerando el peso y error de cada ítem) y el efecto causal del tratamiento experimental. Este enfoque corrige posibles sesgos en los coeficientes derivados de errores de medición y ofrece estimaciones más precisas y realistas, lo que evita el sesgo de atenuación (subestimación del efecto verdadero). Aplicado al caso de Valentino y Warren [-@valentino_cultural_2025], un modelo hIRT habría permitido estimar directamente cómo las variables experimentales afectaban los niveles reales de las actitudes sociopolíticas, teniendo en cuenta la heterogeneidad de los ítems [@stoetzer_causal_2025]. Es decir, reconociendo que algunas preguntas miden mejor ese concepto que otras y que no todas tienen el mismo peso. En lugar de simplemente promediar todas las preguntas como si fueran iguales, este modelo calcula un puntaje latente más preciso, ponderando las preguntas según su precisión y su exigencia.  Del mismo modo, el uso de pruebas de DIF (funcionamiento diferencial del ítem) ayudaría a validar el supuesto de exclusión restringida, esto es, que el tratamiento no afecta directamente a los ítems, sino que solo lo hace a través del concepto latente (actitud sociopolítica en nuestro caso). 
+
+Otro aspecto relevante de diseño es que el uso de viñetas, aunque útil para aislar mecanismos conceptuales, podría ser complementado o reemplazado por diseños de tipo conjoint experiment [@hainmueller_causal_2014]. Estos permiten estimar la importancia relativa de múltiples atributos simultáneamente, reflejando de manera más realista los juicios que las personas hacen de contextos complejos de la vida cotidiana. Por ejemplo, un conjoint podría haber presentado diferentes combinaciones de intencionalidad, poder y resultados desiguales en un mismo diseño experimental, permitiendo identificar con mayor precisión cuales de estos factores pesa más al juzgar un acto como discriminatorio. Además, los diseños conjoint ofrecen ventajas comparativas, como la posibilidad de detectar interacciones entre atributos, algo que las viñetas tradicionales capturan de forma más limitada  [@hainmueller_causal_2014; @leeper_measuring_2020]. Incorporar esa metodología habría fortalecido el estudio, al acercar el escenario experimental a decisiones y percepciones sociales más realistas y complejas.  
+
+En conjunto, la aplicación de métodos como conjoint y modelos hIRT no solo fortalecería la validez de los hallazgos, sino que permitiría responder de forma más precisa a la pregunta central del estudio, la cual es entender que criterios usan las personas para definir la discriminación y cómo esas decisiones impactan sus actitudes sociopolíticas. Estas mejoras metodológicas representan un camino de mejora para futuras investigaciones que busquen avanzar desde la mera significancia estadística hacia una comprensión más robusta y matizada de los mecanismos culturales y sociales que estructuran la medición de la discriminación.  
+
+En conclusión, esta replicación confirma la solidez de los hallazgos de Valentino y Warren [-@valentino_cultural_2025] sobre la importancia de los resultados desiguales frente al trato desigual como determinantes de las actitudes sociopolíticas hacia la discriminación. Sin embargo, también evidencia oportunidades metodológicas significativas. El uso de promedios para medir outcomes ignora la heterogeneidad y precisión diferencial de los ítems, algo que modelos como hIRT podrían abordar integrando la medición y estimación causal en un solo paso. Asimismo, complementar las viñetas con experimentos conjoint permitiría estimar con mayor realismo la importancia relativa de cada dimensión de discriminación en la percepción de los estadounidenses. En conjunto, estas mejoras no solo fortalecerían la validez de futuros estudios, sino que profundizarían nuestra comprensión de cómo las personas definen y evalúan la discriminación en sus múltiples formas, y como estas definiciones moldean su apoyo a políticas.  
+
+# Referencias
+
+::: {#refs}
+:::
+
+\pagebreak
+
+# Código de R
+
+```{r ref.label=knitr::all_labels(), echo=TRUE, eval=FALSE}
+
+```

@@ -13,7 +13,7 @@ output:
   bookdown::pdf_document2:
     template: null
     toc: false
-    keep_tex: false
+    keep_tex: true
     number_sections: false
 bibliography: ../input/bib/magister.bib     
 csl: ../input/bib/apa6.csl    
@@ -48,6 +48,7 @@ header-includes:
   - \usepackage{tabu}
   - \usepackage{fancyhdr}
   - \fancyhead{} 
+  - \usepackage{threeparttable}
 ---
 
 \pagebreak

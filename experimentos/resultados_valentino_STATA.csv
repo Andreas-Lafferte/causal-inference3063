@@ -1,0 +1,15 @@
+outcome,treatvscons,dy_dx,std_err,p_value,ci_lower,ci_upper
+discrimination,UnequalTreatment,-0.0026224,0.0005141,0.0,-0.0036308,-0.0016141
+discrimination,UnequalOutcomes,0.003901,0.0004921,0.0,0.0029358,0.0048662
+complain,UnequalTreatment,0.004473,0.0005724,0.0,0.0033503,0.0055958
+complain,UnequalOutcomes,0.0007436,0.0005417,0.17,-0.0003189,0.001806
+attention,UnequalTreatment,-0.0029087,0.0005271,0.0,-0.0039425,-0.0018749
+attention,UnequalOutcomes,0.0034733,0.0004979,0.0,0.0024967,0.0044499
+mip,UnequalTreatment,-0.001924,0.0005181,0.0,-0.0029401,-0.0009079
+mip,UnequalOutcomes,0.0046448,0.000503,0.0,0.0036583,0.0056313
+law,UnequalTreatment,-0.0053015,0.0006139,0.0,-0.0065056,-0.0040975
+law,UnequalOutcomes,0.0008079,0.0005837,0.167,-0.000337,0.0019528
+affirm,UnequalTreatment,-0.0036587,0.0005856,0.0,-0.0048071,-0.0025102
+affirm,UnequalOutcomes,0.004218,0.0005323,0.0,0.0031739,0.0052621
+fund,UnequalTreatment,-0.0042413,0.0005275,0.0,-0.0052759,-0.0032067
+fund,UnequalOutcomes,0.0034668,0.0004631,0.0,0.0025585,0.0043752
